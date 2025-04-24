@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block custom_styles %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #007BFF;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1>Dashboard de Medición</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>Fecha y Hora</th>
+                <th>🌡️ Temperatura (°C)</th>
+                <th>🧪 pH</th>
+                <th>💧 TDS (ppm)</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for m in measurements %}
+                <tr>
+                    <td>{{ m.timestamp|date:"Y-m-d H:i:s" }}</td>
+                    <td>{{ m.temperature }}</td>
+                    <td>{{ m.ph }}</td>
+                    <td>{{ m.tds }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No hay datos disponibles</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div style="margin-top: 2rem;">
+            <canvas id="myGauge" width="300" height="300"></canvas>
+        </div>
+    </div>
+{% endblock %}
+{% block custom_scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0/dist/chartjs-plugin-annotation.min.js"></script>
+    <script>
+        Chart.register({
+            id: 'centerText',
+            beforeDraw(chart) {
+                const {width} = chart;
+                const {height} = chart;
+                const ctx = chart.ctx;
+                const value = chart.data.datasets[0].data[0];
+
+                ctx.save();
+                ctx.font = 'bold 40px sans-serif';
+                ctx.fillStyle = '#444';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(`${value.toFixed(1)}°C`, width / 2, height / 2 - 10);
+
+                ctx.font = '20px sans-serif';
+                ctx.fillStyle = '#888';
+                ctx.fillText('Temperatura', width / 2, height / 2 + 25);
+                ctx.restore();
+            }
+        });
+    </script>
+    <script>
+        const value = parseFloat("{{ last_temp|default:0 }}");
+
+        const config = {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [value + 55, 180 - (value + 55)], // de -55 a 125 = 180°
+                    backgroundColor: ['#4caf50', '#e0e0e0'],
+                    borderWidth: 0,
+                    cutout: '70%'
+                }]
+            },
+            options: {
+                aspectRatio: 2,
+                rotation: -90,
+                circumference: 180,
+                plugins: {
+                    legend: {display: false}
+                }
+            },
+        };
+
+        const myChart = new Chart(document.getElementById('myGauge'), config);
+    </script>
+{% endblock %}
