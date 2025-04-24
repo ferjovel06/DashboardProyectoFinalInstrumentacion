@@ -14,3 +14,5 @@ class Measures(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
+        verbose_name = "Measurement"
+        verbose_name_plural = "Measurements"

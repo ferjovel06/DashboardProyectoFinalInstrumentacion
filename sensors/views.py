@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 from .models import Measures
 
@@ -19,9 +20,30 @@ def request_data(request):
 def dashboard(request):
     measurements = Measures.objects.order_by('-timestamp')[:30]
     last_temp = measurements[0].temperature if measurements else None
+    last_ph = measurements[0].ph if measurements else None
+    last_tds = measurements[0].tds if measurements else None
     context = {
         'measurements': measurements,
         'last_temp': last_temp,
+        'last_ph': last_ph,
+        'last_tds': last_tds,
     }
     return render(request, 'dashboard.html', context)
 
+def latest_measurement(request):
+    last = Measures.objects.order_by('-timestamp').first()
+    if last:
+        data = {
+            'temperature': last.temperature,
+            'ph': last.ph,
+            'tds': last.tds,
+            'timestamp': last.timestamp.isoformat(),
+        }
+    else:
+        data = {
+            'temperature': None,
+            'ph': None,
+            'tds': None,
+            'timestamp': None,
+        }
+    return JsonResponse(data)

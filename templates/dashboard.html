@@ -1,46 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block custom_styles %}
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f0f0f0;
-            padding: 2rem;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 0.75rem;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background: #007BFF;
-            color: white;
-        }
-
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/gauges.css' %}">
 {% endblock %}
 {% block content %}
     <div class="container">
@@ -69,60 +31,60 @@
             {% endfor %}
             </tbody>
         </table>
-        <div style="margin-top: 2rem;">
-            <canvas id="myGauge" width="300" height="300"></canvas>
-        </div>
+        <div class="gauge-container row text-center">
+            <h2>Mediciones Actuales</h2>
+            
+            <!-- Gauge de Temperatura -->
+            <div class="col-md-4">
+                <h3>Temperatura</h3>
+                <div id="temperature-gauge">
+                    <svg width="300" height="150"></svg>
+                </div>
+            </div>
+        
+            <!-- Gauge de Sólidos Disueltos -->
+            <div class="col-md-4">
+                <h3>Sólidos Disueltos</h3>
+                <div id="tds-gauge">
+                    <svg width="300" height="150"></svg>
+                </div>
+            </div>
+        
+            <!-- Gauge de pH -->
+            <div class="col-md-4">
+                <h3>pH</h3>
+                <div id="ph-gauge">
+                    <svg width="300" height="150"></svg>
+                </div>
+            </div>
+        </div>`                
     </div>
 {% endblock %}
 {% block custom_scripts %}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0/dist/chartjs-plugin-annotation.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
-        Chart.register({
-            id: 'centerText',
-            beforeDraw(chart) {
-                const {width} = chart;
-                const {height} = chart;
-                const ctx = chart.ctx;
-                const value = chart.data.datasets[0].data[0];
-
-                ctx.save();
-                ctx.font = 'bold 40px sans-serif';
-                ctx.fillStyle = '#444';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(`${value.toFixed(1)}°C`, width / 2, height / 2 - 10);
-
-                ctx.font = '20px sans-serif';
-                ctx.fillStyle = '#888';
-                ctx.fillText('Temperatura', width / 2, height / 2 + 25);
-                ctx.restore();
-            }
-        });
+        const currentTemp = {{ last_temp|default:"null" }};
+        const currentTDS = {{ last_tds|default:"null" }};
+        const currentPH = {{ last_ph|default:"null" }};
     </script>
+    <script src="{% static 'scripts/gauges.js' %}"></script>
     <script>
-        const value = parseFloat("{{ last_temp|default:0 }}");
-
-        const config = {
-            type: 'doughnut',
-            data: {
-                datasets: [{
-                    data: [value + 55, 180 - (value + 55)], // de -55 a 125 = 180°
-                    backgroundColor: ['#4caf50', '#e0e0e0'],
-                    borderWidth: 0,
-                    cutout: '70%'
-                }]
-            },
-            options: {
-                aspectRatio: 2,
-                rotation: -90,
-                circumference: 180,
-                plugins: {
-                    legend: {display: false}
-                }
-            },
-        };
-
-        const myChart = new Chart(document.getElementById('myGauge'), config);
-    </script>
+        const updateTemp = createGauge("#temperature-gauge", -55, 125, "temperatureGradient", currentTemp, "°C");
+        const updateTDS = createGauge("#tds-gauge", 0, 1000, "tdsGradient", currentTDS, " ppm");
+        const updatePH = createGauge("#ph-gauge", 0, 14, "phGradient", currentPH, "");
+    
+        function fetchAndUpdateGauges() {
+            fetch('/sensors/latest/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.temperature !== null) updateTemp(data.temperature);
+                    if (data.tds !== null) updateTDS(data.tds);
+                    if (data.ph !== null) updatePH(data.ph);
+                })
+                .catch(error => console.error("Error al obtener datos:", error));
+        }
+    
+        setInterval(fetchAndUpdateGauges, 2000);
+        fetchAndUpdateGauges(); // Llamada inicial
+    </script>    
 {% endblock %}
