@@ -57,11 +57,17 @@
                     <svg width="300" height="150"></svg>
                 </div>
             </div>
-        </div>`                
+        </div>
+
+        <h2>Historial de Mediciones</h2>
+        <div id="grafica-temp"></div>
+        <div id="grafica-ph"></div>
+        <div id="grafica-tds"></div>        
     </div>
 {% endblock %}
 {% block custom_scripts %}
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v6.js"></script>
     <script>
         const currentTemp = {{ last_temp|default:"null" }};
         const currentTDS = {{ last_tds|default:"null" }};
@@ -87,4 +93,8 @@
         setInterval(fetchAndUpdateGauges, 2000);
         fetchAndUpdateGauges(); // Llamada inicial
     </script>    
+    <script src="{% static 'scripts/charts.js' %}"></script>
+    <script id="mediciones-data" type="application/json">
+        {{ data|safe }}
+    </script>      
 {% endblock %}

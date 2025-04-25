@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+import json
 
 from .models import Measures
 
@@ -22,11 +23,23 @@ def dashboard(request):
     last_temp = measurements[0].temperature if measurements else None
     last_ph = measurements[0].ph if measurements else None
     last_tds = measurements[0].tds if measurements else None
+
+    # Extraer los valores de cada medición para pasar al frontend
+    data = [
+        {
+            'timestamp': measurement.timestamp.strftime('%Y-%m-%d %H:%M'),
+            'temperature': measurement.temperature,
+            'ph': measurement.ph,
+            'tds': measurement.tds,
+        } for measurement in measurements
+    ]
+
     context = {
         'measurements': measurements,
         'last_temp': last_temp,
         'last_ph': last_ph,
         'last_tds': last_tds,
+        'data': json.dumps(data),
     }
     return render(request, 'dashboard.html', context)
 
