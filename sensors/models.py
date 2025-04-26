@@ -8,6 +8,7 @@ class Measures(models.Model):
     temperature = models.FloatField()
     ph = models.FloatField()
     tds = models.FloatField()
+    ec = models.FloatField(null=True, blank=True)  # Optional field for electrical conductivity
 
     def __str__(self):
         return f"Measures at {self.timestamp}: Temperature={self.temperature}, pH={self.ph}, TDS={self.tds}"

@@ -23,6 +23,7 @@ def dashboard(request):
     last_temp = measurements[0].temperature if measurements else None
     last_ph = measurements[0].ph if measurements else None
     last_tds = measurements[0].tds if measurements else None
+    last_ec = measurements[0].ec if measurements else None
 
     # Extraer los valores de cada medición para pasar al frontend
     data = [
@@ -39,6 +40,7 @@ def dashboard(request):
         'last_temp': last_temp,
         'last_ph': last_ph,
         'last_tds': last_tds,
+        'last_ec': last_ec,
         'data': json.dumps(data),
     }
     return render(request, 'dashboard.html', context)
