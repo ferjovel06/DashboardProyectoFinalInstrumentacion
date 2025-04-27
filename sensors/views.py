@@ -12,8 +12,9 @@ def request_data(request):
         temperature = float(request.POST.get("temperatura", 0))
         ph = float(request.POST.get("ph", 0))
         tds = float(request.POST.get("tds", 0))
+        ec = float(request.POST.get("ecValue", 0))  # Optional field for electrical conductivity
 
-        Measures.objects.create(temperature=temperature, ph=ph, tds=tds)
+        Measures.objects.create(temperature=temperature, ph=ph, tds=tds, ec=ec)
         return HttpResponse("Datos recibidos", status=201)
     return HttpResponse("Método no permitido", status=405)
 

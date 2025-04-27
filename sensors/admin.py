@@ -4,9 +4,9 @@ from .models import Measures
 
 @admin.register(Measures)
 class MeasuresAdmin(admin.ModelAdmin):
-    list_display = ('temperature', 'ph', 'tds', 'timestamp')
-    list_filter = ('temperature', 'ph', 'tds')
-    search_fields = ('temperature', 'ph', 'tds')
+    list_display = ('temperature', 'ph', 'tds', 'ec', 'timestamp')
+    list_filter = ('temperature', 'ph', 'tds', 'ec')
+    search_fields = ('temperature', 'ph', 'tds', 'ec')
     ordering = ('-timestamp',)
     date_hierarchy = 'timestamp'
     list_per_page = 20
