@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from .models import Measures
+from .models import Measure, Suggestion
 
-@admin.register(Measures)
+@admin.register(Measure)
 class MeasuresAdmin(admin.ModelAdmin):
     list_display = ('temperature', 'ph', 'tds', 'ec', 'timestamp')
     list_filter = ('temperature', 'ph', 'tds', 'ec')
@@ -26,3 +26,12 @@ class MeasuresAdmin(admin.ModelAdmin):
 
         return response
     export_as_csv.short_description = "Export selected measurements as CSV"
+
+@admin.register(Suggestion)
+class SuggestionsAdmin(admin.ModelAdmin):
+    list_display = ('title', 'subtitle', 'description', 'timestamp')
+    list_filter = ('title', 'subtitle')
+    search_fields = ('title', 'subtitle', 'description')
+    ordering = ('-timestamp',)
+    date_hierarchy = 'timestamp'
+    list_per_page = 20

@@ -1,63 +1,223 @@
 {% extends 'base.html' %}
-{% load static %}
-{% block custom_styles %}
-<link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
-<link rel="stylesheet" href="{% static 'styles/gauges.css' %}">
-{% endblock %}
-{% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-9">
-            <!-- Contenido de la columna principal -->
-            <div class="row mb-3 align-items-stretch">
-                <div class="col-md-6 d-flex">
-                    <!-- Primera columna de la primera fila -->
-                    <div class="card border-0 flex-fill d-flex">
-                        <div class="card-body">
-                            <h5 class="dashboard-card-title fw-bold">Potencial de hidrogeno (pH)</h5>
-                            <div class="row text-center align-items-center justify-content-center">
-                                <div class="col-md-3 d-flex justify-content-center align-items-center">
-                                    <p class="ph-text fw-bold">{{ last_ph }}</p>
-                                </div>
+{% load custom_filters %}
+{% load static %} {% block custom_styles %}
+    <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}"/>
+{% endblock %} {% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <!-- Contenido de la columna principal -->
+                <div class="row mb-3 align-items-stretch">
+                    <div class="col-md-6 d-flex">
+                        <!-- Primera columna de la primera fila -->
+                        <div class="card border-0 flex-fill d-flex">
+                            <div class="card-body">
+                                <h5 class="dashboard-card-title fw-bold">
+                                    Potencial de hidrogeno (pH)
+                                </h5>
                                 <div
-                                    class="ph-status col-md-3 d-flex flex-column justify-content-center align-items-center mt-1">
-                                    <p class="ph-alcalino {% if last_ph > 8 %}active{% endif %}">Alcalino</p>
-                                    <p class="ph-neutro {% if last_ph >= 6.5 and last_ph <= 8 %}active{% endif %}">
-                                        Neutro</p>
-                                    <p class="ph-acido {% if last_ph < 6.5 %}active{% endif %}">Ácido</p>
+                                        class="row text-center align-items-center justify-content-center"
+                                >
+                                    <div
+                                            class="col-md-3 d-flex justify-content-center align-items-center"
+                                    >
+                                        <p class="ph-text fw-bold" id="last_ph">{{ last_ph }}</p>
+                                    </div>
+                                    <div
+                                            class="ph-status col-md-3 d-flex flex-column justify-content-center align-items-center mt-1"
+                                    >
+                                        <p class="ph-alcalino {% if last_ph > 8 %}active{% endif %}">
+                                            Alcalino
+                                        </p>
+                                        <p
+                                                class="ph-neutro {% if last_ph >= 6.5 and last_ph <= 8 %}active{% endif %}"
+                                        >
+                                            Neutro
+                                        </p>
+                                        <p class="ph-acido {% if last_ph < 6.5 %}active{% endif %}">
+                                            Ácido
+                                        </p>
+                                    </div>
+                                    <div
+                                            class="col-md-6 d-flex justify-content-center align-items-center"
+                                    >
+                                        <img
+                                                src="{% static 'assets/phImage.svg' %}"
+                                                alt="pH Icon"
+                                                class="img-fluid"
+                                                width="100"
+                                        />
+                                    </div>
                                 </div>
-                                <div class="col-md-6 d-flex justify-content-center align-items-center">
-                                    <img src="{% static 'assets/phImage.svg' %}" alt="pH Icon" class="img-fluid"
-                                        width="100">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex">
+                        <!-- Segunda columna de la primera fila -->
+                        <div class="card border-0 flex-fill d-flex">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="dashboard-card-title fw-bold">Temperatura</h5>
+                                <div
+                                        class="flex-fill d-flex align-items-center justify-content-center gap-3"
+                                >
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        {% if last_temp > 25 %}
+                                            <img
+                                                    src="{% static 'assets/hotTemp.svg' %}"
+                                                    alt="Temperature Icon"
+                                                    class="img-fluid"
+                                                    width="80"
+                                            />
+                                        {% else %}
+                                            <img
+                                                    src="{% static 'assets/coldTemp.svg' %}"
+                                                    alt="Temperature Icon"
+                                                    class="img-fluid"
+                                                    width="80"
+                                            />
+                                        {% endif %}
+                                    </div>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <p class="temperature-text fw-bold mb-0" id="last_temp">
+                                            {{ last_temp }} °C
+                                        </p>
+                                    </div>
+                                    <div
+                                            class="d-flex flex-column justify-content-center align-items-center"
+                                    >
+                                        <button
+                                                class="btn btn-sm mb-1"
+                                                onclick="changeTemperatureUnit('up')"
+                                        >
+                                            <img
+                                                    src="{% static 'assets/up-arrow.svg' %}"
+                                                    alt="Up Arrow"
+                                                    width="16"
+                                            />
+                                        </button>
+                                        <button
+                                                class="btn btn-sm"
+                                                onclick="changeTemperatureUnit('down')"
+                                        >
+                                            <img
+                                                    src="{% static 'assets/down-arrow.svg' %}"
+                                                    alt="Down Arrow"
+                                                    width="16"
+                                            />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 d-flex">
-                    <!-- Segunda columna de la primera fila -->
-                    <div class="card border-0 flex-fill d-flex">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="dashboard-card-title fw-bold">Temperatura</h5>
-                            <div class="flex-fill d-flex align-items-center justify-content-center gap-3">
-                                <div class="d-flex justify-content-center align-items-center">
-                                    {% if last_temp > 25 %}
-                                    <img src="{% static 'assets/hotTemp.svg' %}" alt="Temperature Icon"
-                                        class="img-fluid" width="80">
-                                    {% else %}
-                                    <img src="{% static 'assets/coldTemp.svg' %}" alt="Temperature Icon"
-                                        class="img-fluid" width="80">
-                                    {% endif %}
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <!-- Primera columna de la segunda fila -->
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <h5 class="dashboard-card-title fw-bold">Solidos Disueltos</h5>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img
+                                                src="{% static 'assets/tdsImage.svg' %}"
+                                                alt="Sólidos Disueltos Icon"
+                                                class="img-fluid"
+                                                width="100"
+                                        />
+                                    </div>
+                                    <div class="col-md-8 d-flex align-items-center">
+                                        <p class="tds-text fw-bold mb-0" id="last_tds">{{ last_tds }} ppm</p>
+                                    </div>
                                 </div>
-                                <div class="d-flex justify-content-center align-items-center">
-                                    <p class="temperature-text fw-bold mb-0">{{ last_temp }} °C</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Segunda columna de la segunda fila -->
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <h5 class="dashboard-card-title fw-bold">
+                                    Conductividad Electrica
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img
+                                                src="{% static 'assets/ecImage.svg' %}"
+                                                alt="Sólidos Disueltos Icon"
+                                                class="img-fluid"
+                                                width="100"
+                                        />
+                                    </div>
+                                    <div class="col-md-8 d-flex align-items-center">
+                                        <p class="tds-text fw-bold mb-0" id="last_ec">{{ last_ec }} mS/cm</p>
+                                    </div>
                                 </div>
-                                <div class="d-flex flex-column justify-content-center align-items-center">
-                                    <button class="btn btn-sm mb-1" onclick="changeTemperatureUnit('up')">
-                                        <img src="{% static 'assets/up-arrow.svg' %}" alt="Up Arrow" width="16">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Columna única de la tercera fila -->
+                        <div
+                                class="card border-0 rounded-4 overflow-hidden p-0"
+                                style="margin: 0 auto"
+                        >
+                            <div class="card-body p-0">
+                                <div
+                                        id="carouselExample"
+                                        class="carousel slide"
+                                        data-bs-ride="carousel"
+                                >
+                                    <div class="carousel-inner">
+                                        {% for suggestion in suggestions %}
+                                            <div
+                                                    class="carousel-item {% if forloop.first %}active{% endif %}"
+                                            >
+                                                <img
+                                                        src="{{ suggestion.image.url }}"
+                                                        class="d-block w-100 rounded-4"
+                                                        alt="Imagen {{ forloop.counter }}"
+                                                        style="object-fit: cover; width: 100%; height: 350px"
+                                                />
+                                                <div
+                                                        class="carousel-caption d-none d-md-block rounded-bottom-4 py-2"
+                                                >
+                                                    <h3 class="fw-bold mb-3">
+                                                        {{ suggestion.title }}
+                                                    </h3>
+                                                    <h5 class="fw-bold mb-3">
+                                                        {{ suggestion.subtitle }}
+                                                    </h5>
+                                                    <p>{{ suggestion.description }}</p>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <button
+                                            class="carousel-control-prev"
+                                            type="button"
+                                            data-bs-target="#carouselExample"
+                                            data-bs-slide="prev"
+                                    >
+                    <span
+                            class="carousel-control-prev-icon"
+                            aria-hidden="true"
+                    ></span>
+                                        <span class="visually-hidden">Anterior</span>
                                     </button>
-                                    <button class="btn btn-sm" onclick="changeTemperatureUnit('down')">
-                                        <img src="{% static 'assets/down-arrow.svg' %}" alt="Down Arrow" width="16">
+                                    <button
+                                            class="carousel-control-next"
+                                            type="button"
+                                            data-bs-target="#carouselExample"
+                                            data-bs-slide="next"
+                                    >
+                    <span
+                            class="carousel-control-next-icon"
+                            aria-hidden="true"
+                    ></span>
+                                        <span class="visually-hidden">Siguiente</span>
                                     </button>
                                 </div>
                             </div>
@@ -65,72 +225,106 @@
                     </div>
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <!-- Primera columna de la segunda fila -->
-                    <div class="card border-0">
-                        <div class="card-body">
-                            <h5 class="dashboard-card-title fw-bold">Solidos Disueltos</h5>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <img src="{% static 'assets/tdsImage.svg' %}" alt="Sólidos Disueltos Icon"
-                                        class="img-fluid" width="100">
+            <div class="col-md-3">
+                <!-- Contenido de la columna secundaria -->
+                <div class="card border-0">
+                    <div class="card-body">
+                        <h5 class="dashboard-card-title fw-bold">Observaciones del monitoreo</h5>
+                        <div id="observations-container">
+                            {% for observation in observations %}
+                                <div class="mb-2">
+                                    <div class="d-flex align-items-center">
+                                <span
+                                        class="rounded-circle me-2"
+                                        style="display:inline-block; width:12px; height:12px; background-color: hsl({{ forloop.counter0|add:"1"|mul:"60" }}, 70%, 55%);"
+                                ></span>
+                                        <span class="fw-bold"
+                                              style="color: #516F91; flex: 1;">{{ observation.text }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-start">
+                                    <span class="ms-4 text-muted"
+                                          style="white-space: nowrap; color: #879CB3">{{ observation.timestamp }}</span>
+                                    </div>
                                 </div>
-                                <div class="col-md-8 d-flex align-items-center">
-                                    <p class="tds-text fw-bold mb-0">{{ last_tds }} ppm</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-0 mt-3">
+                    <div class="card-body">
+                        <h5 class="dashboard-card-title fw-bold mb-3">Panel de acceso rápido</h5>
+                        <div class="list-group">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <div class="d-flex align-items-center">
+                                    <img src="{% static 'assets/motores.svg' %}" alt="Motor 1" width="32" class="me-2"/>
+                                    <span class="fw-bold dashboard-card-title">Motor de pH alcalino</span>
+                                </div>
+                                <div class="form-check form-switch" style="transform: scale(1.5);">
+                                    <input class="form-check-input" type="checkbox" id="motor-ph-alcalino-toggle"
+                                           style="width: 2em;">
+                                    <label class="form-check-label" for="motor-ph-alcalino-toggle"></label>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <div class="d-flex align-items-center">
+                                    <img src="{% static 'assets/motores.svg' %}" alt="Motor 2" width="32" class="me-2"/>
+                                    <span class="fw-bold dashboard-card-title">Motor de pH acido</span>
+                                </div>
+                                <div class="form-check form-switch" style="transform: scale(1.5);">
+                                    <input class="form-check-input" id="motor-ph-acido-toggle" type="checkbox"
+                                           style="width: 2em;">
+                                    <label class="form-check-label" for="motor-ph-acido-toggle"></label>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <img src="{% static 'assets/motores.svg' %}" alt="Motor 3" width="32" class="me-2"/>
+                                    <span class="fw-bold dashboard-card-title">Motor de tDS altos</span>
+                                </div>
+                                <div class="form-check form-switch" style="transform: scale(1.5);">
+                                    <input class="form-check-input" type="checkbox" id="motor-tds-altos-toggle"
+                                           style="width: 2em;">
+                                    <label class="form-check-label" for="motor-tds-altos-toggle"></label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <!-- Segunda columna de la segunda fila -->
-                    <div class="card border-0">
-                        <div class="card-body">
-                            <h5 class="dashboard-card-title fw-bold">Conductividad Electrica</h5>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <img src="{% static 'assets/ecImage.svg' %}" alt="Sólidos Disueltos Icon"
-                                        class="img-fluid" width="100">
-                                </div>
-                                <div class="col-md-8 d-flex align-items-center">
-                                    <p class="tds-text fw-bold mb-0">{{ last_ec }} mS/cm</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Columna única de la tercera fila -->
-                    <div class="card border-0">
-                        <div class="card-body">
-                            <h5 class="card-title">Primera Columna</h5>
-                            <p class="card-text">Contenido de la primera columna de la primera fila.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <!-- Contenido de la columna secundaria -->
-            <div class="card border-0">
-                <div class="card-body">
-                    <h5 class="card-title">Primera Columna</h5>
-                    <p class="card-text">Contenido de la primera columna de la primera fila.</p>
-                </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        function actualizarEstadoMotores() {
+                            fetch('/get_motores/')
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log(data);
+                                    document.getElementById('motor-ph-alcalino-toggle').checked = data.motor_ph_alcalino;
+                                    document.getElementById('motor-ph-acido-toggle').checked = data.motor_ph_acido;
+                                    document.getElementById('motor-tds-altos-toggle').checked = data.motor_tds_altos;
+
+                                    // Actualizamos el color de fondo de los toggles
+                                    ['motor-ph-alcalino-toggle', 'motor-ph-acido-toggle', 'motor-tds-altos-toggle'].forEach(id => {
+                                        const motor = document.getElementById(id);
+                                        motor.style.backgroundColor = motor.checked ? '#516F91' : '';
+                                    });
+                                })
+                                .catch(error => console.error('Error actualizando motores:', error));
+                        }
+
+                        setInterval(actualizarEstadoMotores, 3000); // Actualiza cada 3 segundos
+                        actualizarEstadoMotores(); // Llamada inicial al cargar la página
+                    });
+                </script>
             </div>
         </div>
     </div>
-</div>
-<!-- <div class="container">
-    
+    <!-- <div class="container">
+
     <div class="gauge-container row text-center">
         <h2>Mediciones Actuales</h2>
 
         <!-- Gauge de Temperatura -->
-<!-- <div class="col-md-4">
+    <!-- <div class="col-md-4">
             <h3>Temperatura</h3>
             <div id="temperature-gauge">
                 <svg width="300" height="150"></svg>
@@ -138,7 +332,7 @@
         </div>
 
         <!-- Gauge de Sólidos Disueltos -->
-<!-- <div class="col-md-4">
+    <!-- <div class="col-md-4">
             <h3>Sólidos Disueltos</h3>
             <div id="tds-gauge">
                 <svg width="300" height="150"></svg>
@@ -146,7 +340,7 @@
         </div>
 
         <!-- Gauge de pH -->
-<!-- <div class="col-md-4">
+    <!-- <div class="col-md-4">
             <h3>pH</h3>
             <div id="ph-gauge">
                 <svg width="300" height="150"></svg>
@@ -159,37 +353,15 @@
     <div id="grafica-ph"></div>
     <div id="grafica-tds"></div>
 </div> -->
-{% endblock %}
-{% block custom_scripts %}
-<script src="{% static 'scripts/temperature.js' %}"></script>
-<!-- Load d3.js -->
-<script src="https://d3js.org/d3.v6.js"></script>
-<script src="{% static 'scripts/charts.js' %}"></script>
-<script id="mediciones-data" type="application/json">
-        {{ data|safe }}
-    </script>
-<script>
-    function updateDateTime() {
-        const now = new Date();
-        const options = {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true,
-            hourCycle: 'h12'
-        };
-        const dateOptions = {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-        };
-        let time = now.toLocaleTimeString('es-ES', options);
-        time = time.replace('a. m.', 'AM').replace('p. m.', 'PM');
-        const date = now.toLocaleDateString('es-ES', dateOptions);
-        const capitalizedDate = date.charAt(0).toUpperCase() + date.slice(1);
-        document.getElementById('datetime').textContent = `${time}      ${capitalizedDate}`;
-    }
-    setInterval(updateDateTime, 1000);
-    updateDateTime();
-</script>
+{% endblock %} {% block custom_scripts %}
+    <script src="{% static 'scripts/temperature.js' %}"></script>
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <script src="{% static 'scripts/charts.js' %}"></script>
+    <script id="mediciones-data" type="application/json">
+          {{ data|safe }}
+        </script>
+    <script src="{% static 'scripts/dateTime.js' %}"></script>
+    <script src="{% static 'scripts/latest_measures.js' %}"></script>
+    <script src="{% static 'scripts/get_observations.js' %}"></script>
 {% endblock %}

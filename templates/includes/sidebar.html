@@ -1,41 +1,42 @@
 {% load static %}
 <div class="sidebar d-flex flex-column flex-shrink-0 text-center"
-    style="width: 280px; height: 100vh; overflow-y: auto;">
+     style="width: 280px; height: calc(100vh - 88px); overflow: hidden; position: fixed;">
     <ul class="flex-column">
         <li>
-            <a href="#" class="nav-link active">
-                <img src="{% static 'assets/dashboard.svg' %}" alt="Dashboard" class="img-fluid">
-                Dashboard
+            <a href="#" class="nav-link d-flex align-items-center justify-content-start active">
+                <img src="{% static 'assets/dashboard.svg' %}" alt="Dashboard" class="img-fluid me-2"
+                     style="width: 24px;">
+                <span>Dashboard</span>
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link" style="color: #274C77;">
-                <img src="{% static 'assets/ph.svg' %}" alt="pH" class="img-fluid">
+            <a href="#" class="nav-link d-flex align-items-center justify-content-start">
+                <img src="{% static 'assets/ph.svg' %}" alt="pH" class="img-fluid me-2">
                 pH
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link">
-                <img src="{% static 'assets/temperature.svg' %}" alt="Temperatura" class="img-fluid">
+            <a href="#" class="nav-link d-flex align-items-center justify-content-start">
+                <img src="{% static 'assets/temperature.svg' %}" alt="Temperatura" class="img-fluid me-2">
                 Temperatura
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link">
-                <img src="{% static 'assets/solidosDisueltos.svg' %}" alt="Solidos Disueltos" class="img-fluid">
+            <a href="#" class="nav-link d-flex align-items-center justify-content-start">
+                <img src="{% static 'assets/solidosDisueltos.svg' %}" alt="Solidos Disueltos" class="img-fluid me-2">
                 Solidos Disueltos
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link">
-                <img src="{% static 'assets/motores.svg' %}" alt="Motores" class="img-fluid">
+            <a href="#" class="nav-link d-flex align-items-center justify-content-start">
+                <img src="{% static 'assets/motores.svg' %}" alt="Motores" class="img-fluid me-2">
                 Motores
             </a>
         </li>
     </ul>
     <div class="text-center mt-auto py-5 sidebar-footer">
         <a href="#" class="nav-link fw-bold d-flex align-items-center justify-content-center">
-            <img src="{% static 'assets/configuracion.svg' %}" alt="Configuracion" class="img-fluid">
+            <img src="{% static 'assets/configuracion.svg' %}" alt="Configuracion" class="img-fluid me-2">
             Configuración
         </a>
     </div>
