@@ -129,6 +129,16 @@ def get_motores(request):
         'motor_tds_altos': motor_tds_altos,
     })
 
+def ph(request):
+    measurements = Measure.objects.order_by('-timestamp')[:30]
+    last_ph = measurements[0].ph if measurements else None
+
+    context = {
+        'measurements': measurements,
+        'last_ph': last_ph,
+    }
+    return render(request, 'ph.html', context)
+
 @csrf_exempt
 @require_POST
 def set_motor_state(request):

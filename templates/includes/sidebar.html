@@ -3,14 +3,15 @@
      style="width: 280px; height: calc(100vh - 88px); overflow: hidden; position: fixed;">
     <ul class="flex-column">
         <li>
-            <a href="#" class="nav-link d-flex align-items-center justify-content-start active">
-                <img src="{% static 'assets/dashboard.svg' %}" alt="Dashboard" class="img-fluid me-2"
-                     style="width: 24px;">
+            <a href="{% url 'dashboard' %}" class="nav-link d-flex align-items-center justify-content-start {% if request.path == '/dashboard/' %}active{% endif %}">
+                
+                <img src="{% static 'assets/dashboard.svg' %}" alt="Dashboard" class="img-fluid me-2 active-icon" style="width: 24px;">
+                <img src="{% static 'assets/dashboardLight.svg' %}" alt="Dashboard" class="img-fluid me-2 default-icon d-none" style="width: 24px;">
                 <span>Dashboard</span>
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link d-flex align-items-center justify-content-start">
+            <a href="{% url 'ph' %}" class="nav-link d-flex align-items-center justify-content-start {% if request.path == '/ph/' %}active{% endif %}">
                 <img src="{% static 'assets/ph.svg' %}" alt="pH" class="img-fluid me-2">
                 pH
             </a>

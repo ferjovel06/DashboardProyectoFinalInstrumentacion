@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% load static %} {% block custom_styles %}
+<link rel="stylesheet" href="{% static 'styles/dashboard.css' %}" />
+{% endblock %} {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card border-0 flex-fill d-flex" style="max-width: 400px; margin: 0 auto;">
+                        <div class="card-body">
+                            <h5 class="dashboard-card-title fw-bold text-center">
+                                Potencial de hidrogeno (pH)
+                            </h5>
+                            <div class="row text-center align-items-center justify-content-center">
+                                <div class="col-md-3 d-flex justify-content-center align-items-center">
+                                    <p class="ph-text fw-bold" id="last_ph">{{ last_ph }}</p>
+                                </div>
+                                <div
+                                    class="ph-status col-md-3 d-flex flex-column justify-content-center align-items-center mt-1">
+                                    <p class="ph-alcalino {% if last_ph > 8 %}active{% endif %}">
+                                        Alcalino
+                                    </p>
+                                    <p class="ph-neutro {% if last_ph >= 6.5 and last_ph <= 8 %}active{% endif %}">
+                                        Neutro
+                                    </p>
+                                    <p class="ph-acido {% if last_ph < 6.5 %}active{% endif %}">
+                                        Ácido
+                                    </p>
+                                </div>
+                                <div class="col-md-6 d-flex justify-content-center align-items-center">
+                                    <img src="{% static 'assets/phImage.svg' %}" alt="pH Icon" class="img-fluid"
+                                        width="80" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-4">
+                <div class="col">
+                    <h5 class="dashboard-card-title fw-bold text-center">
+                        ESCALA DEL NIVEL DE pH
+                    </h5>
+                    <div class="row text-center justify-content-center">
+                        <div class="col-auto d-flex flex-column align-items-center">
+                            <img src="{% static 'assets/phAcido.svg' %}" alt="Low pH" class="img-fluid" />
+                            <p class="dashboard-card-title mt-2">Ácido</p>
+                        </div>
+                        <div class="col-auto d-flex flex-column align-items-center">
+                            <img src="{% static 'assets/phNeutro.svg' %}" alt="Neutral pH" class="img-fluid" />
+                            <p class="dashboard-card-title mt-2">Neutro</p>
+                        </div>
+                        <div class="col-auto d-flex flex-column align-items-center">
+                            <img src="{% static 'assets/phAlcalino.svg' %}" alt="High pH" class="img-fluid" />
+                            <p class="dashboard-card-title mt-2">Alcalino</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <!-- Content for the third row -->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <!-- Content for the 3-column section -->
+        </div>
+    </div>
+</div>
+{% endblock %}

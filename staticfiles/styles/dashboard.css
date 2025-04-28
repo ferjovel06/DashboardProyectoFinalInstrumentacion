@@ -1,14 +1,7 @@
 body {
     font-family: 'Lato', sans-serif;
     background: #E7ECEF;
-}
-
-main {
-    display: flex;
-    flex-direction: row;
     height: 100vh; /* Ocupa toda la altura de la ventana */
-    margin: 0;
-    overflow: hidden;
 }
 
 nav, nav * {
@@ -44,11 +37,15 @@ a.active:hover {
     background-color: #1E3A5F;
 }
 
+.nav-link:not(.active) img {
+    filter: invert(31%) sepia(96%) saturate(746%) hue-rotate(191deg) brightness(92%) contrast(89%);
+}
+
 .content {
     flex: 1; /* El contenido principal ocupa el resto del espacio */
     overflow-y: auto; /* Permite scroll solo en el contenido principal */
-    padding: 1.5rem;
     background: #E7ECEF;
+    margin-left: 280px;
 }
 
 .dashboard-card-title {
