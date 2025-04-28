@@ -4,6 +4,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
 
+from django.views.decorators.http import require_POST
+from paho.mqtt import publish
+
 from .models import Measure, Suggestion
 from django.utils import timezone
 
@@ -18,20 +21,9 @@ def request_data(request):
         motor_ph_acido = request.POST.get('motor_ph_acido', '').strip()
         motor_tds_altos = request.POST.get('motor_tds_altos', '').strip()
 
-        # Verifica los valores de los motores
-        print(f"motor_ph_alcalino: '{motor_ph_alcalino}'")
-        print(f"motor_ph_acido: '{motor_ph_acido}'")
-        print(f"motor_tds_altos: '{motor_tds_altos}'")
-
-        # Compara después de eliminar espacios
         motor_ph_alcalino = motor_ph_alcalino == '1'
         motor_ph_acido = motor_ph_acido == '1'
         motor_tds_altos = motor_tds_altos == '1'
-
-        # Verifica los valores de los motores
-        print(f"Motor PH Alcalino: {motor_ph_alcalino}")
-        print(f"Motor PH Ácido: {motor_ph_acido}")
-        print(f"Motor TDS Altos: {motor_tds_altos}")
 
         Measure.objects.create(temperature=temperature, ph=ph, tds=tds, ec=ec, motor_ph_alcalino=motor_ph_alcalino, motor_ph_acido=motor_ph_acido, motor_tds_altos=motor_tds_altos)
         return HttpResponse("Datos recibidos", status=201)
@@ -136,3 +128,29 @@ def get_motores(request):
         'motor_ph_acido': motor_ph_acido,
         'motor_tds_altos': motor_tds_altos,
     })
+
+@csrf_exempt
+@require_POST
+def set_motor_state(request):
+    import json
+
+    data = json.loads(request.body)
+    motor = data.get("motor")
+    state = data.get("state")  # True o False
+
+    # Define el topic y payload según el motor
+    if motor == "auto_mode":
+        topic = "sistema/motor_automatizacion"
+    if motor == "ph_alcalino":
+        topic = "sistema/motor_ph_alcalino"
+    elif motor == "ph_acido":
+        topic = "sistema/motor_ph_acido"
+    elif motor == "tds_altos":
+        topic = "sistema/motor_tds_altos"
+    else:
+        return JsonResponse({"error": "Motor inválido"}, status=400)
+
+    payload = "on" if state else "off"
+
+    publish.single(topic, payload, hostname="test.mosquitto.org", port=1883)
+    return JsonResponse({"success": True})

@@ -252,7 +252,13 @@
                 </div>
                 <div class="card border-0 mt-3">
                     <div class="card-body">
-                        <h5 class="dashboard-card-title fw-bold mb-3">Panel de acceso rápido</h5>
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h5 class="dashboard-card-title fw-bold mb-0">Panel de acceso rápido</h5>
+                            <div class="form-check form-switch ms-2" style="transform: scale(1.2);">
+                                <input class="form-check-input" type="checkbox" id="auto-mode-toggle" style="width: 2em;">
+                                <label class="form-check-label fw-bold" for="auto-mode-toggle" style="font-size: 1rem;">Auto</label>
+                            </div>
+                        </div>
                         <div class="list-group">
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <div class="d-flex align-items-center">
@@ -297,12 +303,9 @@
                             fetch('/get_motores/')
                                 .then(response => response.json())
                                 .then(data => {
-                                    console.log(data);
                                     document.getElementById('motor-ph-alcalino-toggle').checked = data.motor_ph_alcalino;
                                     document.getElementById('motor-ph-acido-toggle').checked = data.motor_ph_acido;
                                     document.getElementById('motor-tds-altos-toggle').checked = data.motor_tds_altos;
-
-                                    // Actualizamos el color de fondo de los toggles
                                     ['motor-ph-alcalino-toggle', 'motor-ph-acido-toggle', 'motor-tds-altos-toggle'].forEach(id => {
                                         const motor = document.getElementById(id);
                                         motor.style.backgroundColor = motor.checked ? '#516F91' : '';
@@ -311,8 +314,36 @@
                                 .catch(error => console.error('Error actualizando motores:', error));
                         }
 
-                        setInterval(actualizarEstadoMotores, 3000); // Actualiza cada 3 segundos
-                        actualizarEstadoMotores(); // Llamada inicial al cargar la página
+                        setInterval(actualizarEstadoMotores, 3000);
+                        actualizarEstadoMotores();
+
+                        // --- NUEVO: Enviar orden al servidor cuando cambie el toggle ---
+                        function enviarOrdenMotor(motor, state) {
+                            fetch('/set_motor_state/', {
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({motor: motor, state: state})
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (!data.success) {
+                                        alert('Error al cambiar el estado del motor');
+                                    }
+                                })
+                                .catch(error => {
+                                    alert('Error de comunicación con el servidor');
+                                });
+                        }
+                        
+                        document.getElementById('motor-ph-alcalino-toggle').addEventListener('change', function () {
+                            enviarOrdenMotor('ph_alcalino', this.checked);
+                        });
+                        document.getElementById('motor-ph-acido-toggle').addEventListener('change', function () {
+                            enviarOrdenMotor('ph_acido', this.checked);
+                        });
+                        document.getElementById('motor-tds-altos-toggle').addEventListener('change', function () {
+                            enviarOrdenMotor('tds_altos', this.checked);
+                        });
                     });
                 </script>
             </div>
