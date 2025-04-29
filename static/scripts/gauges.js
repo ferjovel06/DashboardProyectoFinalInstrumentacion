@@ -70,3 +70,15 @@ function createGauge(svgSelector, min, max, gradientId, initialValue, unit) {
     update(initialValue);
     return update;
 }
+
+function actualizarGauges() {
+    fetch('/latest/')
+        .then(response => response.json())
+        .then(data => {
+            if (data.ph !== null && window.phGaugeUpdate) window.phGaugeUpdate(data.ph);
+            if (data.temperature !== null && window.tempGaugeUpdate) window.tempGaugeUpdate(data.temperature);
+            if (data.tds !== null && window.tdsGaugeUpdate) window.tdsGaugeUpdate(data.tds);
+        });
+}
+setInterval(actualizarGauges, 5000);
+actualizarGauges();
