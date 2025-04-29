@@ -3,20 +3,20 @@
 {% load static %} {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <div class="card border-0 flex-fill d-flex" style="max-width: 400px; margin: 0 auto;">
+                    <div class="col-md-8">
+                        <div class="card border-0 flex-fill d-flex" style="max-width: 450px; margin: 0 auto;">
                             <div class="card-body">
                                 <h5 class="dashboard-card-title fw-bold text-center">
                                     Potencial de hidrogeno (pH)
                                 </h5>
                                 <div class="row text-center align-items-center justify-content-center">
-                                    <div class="col-md-3 d-flex justify-content-center align-items-center">
+                                    <div class="col-md-4 d-flex justify-content-center align-items-center">
                                         <p class="ph-text fw-bold" id="last_ph">{{ last_ph }}</p>
                                     </div>
                                     <div
-                                            class="ph-status col-md-3 d-flex flex-column justify-content-center align-items-center mt-1">
+                                            class="ph-status col-md-4 d-flex flex-column justify-content-center align-items-center mt-1">
                                         <p id="alcalino" class="ph-alcalino">
                                             Alcalino
                                         </p>
@@ -27,7 +27,7 @@
                                             Ácido
                                         </p>
                                     </div>
-                                    <div class="col-md-6 d-flex justify-content-center align-items-center">
+                                    <div class="col-md-4 d-flex justify-content-center align-items-center">
                                         <img src="{% static 'assets/phImage.svg' %}" alt="pH Icon" class="img-fluid"
                                              width="80"/>
                                     </div>
@@ -64,7 +64,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="row mb-3">
                     <div class="col">
                         <!-- Contenido de la primera fila -->
