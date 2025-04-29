@@ -3,16 +3,20 @@ function fetchLatestMeasurement() {
         .then(response => response.json())
         .then(data => {
             if (data.temperature !== null) {
-                document.getElementById('last_temp').innerText = data.temperature.toFixed(1) + ' °C';
+                const tempElement = document.getElementById('last_temp');
+                if (tempElement) tempElement.innerText = data.temperature.toFixed(1) + ' °C';
             }
             if (data.ph !== null) {
-                document.getElementById('last_ph').innerText = data.ph.toFixed(2);
+                const phElement = document.getElementById('last_ph');
+                if (phElement) phElement.innerText = data.ph.toFixed(2);
             }
             if (data.tds !== null) {
-                document.getElementById('last_tds').innerText = data.tds.toFixed(0) + ' ppm';
+                const tdsElement = document.getElementById('last_tds');
+                if (tdsElement) tdsElement.innerText = data.tds.toFixed(0) + ' ppm';
             }
             if (data.ec !== null) {
-                document.getElementById('last_ec').innerText = data.ec.toFixed(2) + ' mS/cm';
+                const ecElement = document.getElementById('last_ec');
+                if (ecElement) ecElement.innerText = data.ec.toFixed(2) + ' mS/cm';
             }
         })
         .catch(error => {

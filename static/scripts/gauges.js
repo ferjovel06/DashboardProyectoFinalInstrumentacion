@@ -4,31 +4,24 @@ function createGauge(svgSelector, min, max, gradientId, initialValue, unit) {
     const height = +svg.attr("height");
     const radius = Math.min(width, height) / 2;
 
+    const openAngle = 240 * Math.PI / 180; // 240 grados en radianes
+
     const scale = d3.scaleLinear()
         .domain([min, max])
-        .range([-Math.PI / 1.2, Math.PI / 1.2]);
+        .range([-openAngle / 2, openAngle / 2]);
 
     const arc = d3.arc()
         .innerRadius(radius * 0.7)
         .outerRadius(radius * 0.85)
-        .startAngle(-Math.PI / 1.2)
-        .endAngle(Math.PI / 1.2);
+        .startAngle(-openAngle / 2)
+        .endAngle(openAngle / 2);
 
     const progressArc = d3.arc()
         .innerRadius(radius * 0.7)
         .outerRadius(radius * 0.85)
-        .startAngle(-Math.PI / 1.2);
+        .startAngle(-openAngle / 2);
 
-    const defs = svg.append("defs");
-    const gradient = defs.append("linearGradient")
-        .attr("id", gradientId)
-        .attr("x1", "0%").attr("y1", "100%")
-        .attr("x2", "100%").attr("y2", "0%");
-    
-    gradient.append("stop").attr("offset", "0%").attr("stop-color", "#1e90ff").attr("stop-opacity", 0.9);
-    gradient.append("stop").attr("offset", "50%").attr("stop-color", "#32cd32").attr("stop-opacity", 0.9);
-    gradient.append("stop").attr("offset", "100%").attr("stop-color", "#ffa500").attr("stop-opacity", 0.9);
-
+    // Elimina el gradiente y usa color sólido
     svg.append("path")
         .attr("d", arc)
         .attr("transform", `translate(${width / 2}, ${height / 2})`)
@@ -38,14 +31,34 @@ function createGauge(svgSelector, min, max, gradientId, initialValue, unit) {
 
     const progressPath = svg.append("path")
         .attr("transform", `translate(${width / 2}, ${height / 2})`)
-        .attr("fill", `url(#${gradientId})`);
+        .attr("fill", "#274C77");
+
+    // Texto valor mínimo (izquierda)
+    svg.append("text")
+        .attr("x", width / 2 + radius * 0.85 * Math.cos(Math.PI / 1.2))
+        .attr("y", height / 2 + radius * 0.85 * Math.sin(Math.PI / 1.2) + 20)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "18px")
+        .attr("fill", "#161A41")
+        .attr("opacity", 0.5)
+        .text(min);
+
+    // Texto valor máximo (derecha)
+    svg.append("text")
+        .attr("x", width / 2 - radius * 0.85 * Math.cos(Math.PI / 1.2))
+        .attr("y", height / 2 + radius * 0.85 * Math.sin(Math.PI / 1.2) + 20)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "18px")
+        .attr("fill", "#161A41")
+        .attr("opacity", 0.5)
+        .text(max);
 
     const text = svg.append("text")
         .attr("x", width / 2)
         .attr("y", height / 2 + 10)
         .attr("text-anchor", "middle")
-        .attr("font-size", "24px")
-        .attr("fill", "#333")
+        .attr("font-size", "32px")
+        .attr("fill", "#161A41")
         .text(`${initialValue}${unit}`);
 
     function update(value) {

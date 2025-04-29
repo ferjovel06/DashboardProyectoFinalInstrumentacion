@@ -3,16 +3,14 @@
      style="width: 280px; height: calc(100vh - 88px); overflow: hidden; position: fixed;">
     <ul class="flex-column">
         <li>
-            <a href="{% url 'dashboard' %}" class="nav-link d-flex align-items-center justify-content-start {% if request.path == '/dashboard/' %}active{% endif %}">
-                
-                <img src="{% static 'assets/dashboard.svg' %}" alt="Dashboard" class="img-fluid me-2 active-icon" style="width: 24px;">
-                <img src="{% static 'assets/dashboardLight.svg' %}" alt="Dashboard" class="img-fluid me-2 default-icon d-none" style="width: 24px;">
+            <a href="{% url 'dashboard' %}" class="nav-link d-flex align-items-center justify-content-start {% if request.path == '/' %}active{% endif %}">
+                {% if request.path == '/' %}<img src="{% static 'assets/dashboardLight.svg' %}" alt="Dashboard" class="img-fluid me-2 active-icon" style="width: 24px;">{% else %}<img src="{% static 'assets/dashboard.svg' %}" alt="Dashboard" class="img-fluid me-2 default-icon" style="width: 24px;">{% endif %}
                 <span>Dashboard</span>
             </a>
         </li>
         <li>
             <a href="{% url 'ph' %}" class="nav-link d-flex align-items-center justify-content-start {% if request.path == '/ph/' %}active{% endif %}">
-                <img src="{% static 'assets/ph.svg' %}" alt="pH" class="img-fluid me-2">
+                {% if request.path == '/ph/' %}<img src="{% static 'assets/phLight.svg' %}" alt="pH" class="img-fluid me-2 active-icon" style="width: 24px;">{% else %}<img src="{% static 'assets/ph.svg' %}" alt="pH" class="img-fluid me-2 default-icon" style="width: 24px;">{% endif %}
                 pH
             </a>
         </li>

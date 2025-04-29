@@ -1,6 +1,6 @@
 body {
     font-family: 'Lato', sans-serif;
-    background: #E7ECEF;
+    background: #E7ECEF !important;
     height: 100vh; /* Ocupa toda la altura de la ventana */
 }
 
@@ -37,14 +37,9 @@ a.active:hover {
     background-color: #1E3A5F;
 }
 
-.nav-link:not(.active) img {
-    filter: invert(31%) sepia(96%) saturate(746%) hue-rotate(191deg) brightness(92%) contrast(89%);
-}
-
 .content {
     flex: 1; /* El contenido principal ocupa el resto del espacio */
     overflow-y: auto; /* Permite scroll solo en el contenido principal */
-    background: #E7ECEF;
     margin-left: 280px;
 }
 

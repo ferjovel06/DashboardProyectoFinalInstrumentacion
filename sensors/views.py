@@ -38,23 +38,12 @@ def dashboard(request):
     last_ec = measurements[0].ec if measurements else None
     suggestions = Suggestion.objects.order_by('-timestamp')[:5]
 
-    # Extraer los valores de cada medición para pasar al frontend
-    data = [
-        {
-            'timestamp': measurement.timestamp.strftime('%Y-%m-%d %H:%M'),
-            'temperature': measurement.temperature,
-            'ph': measurement.ph,
-            'tds': measurement.tds,
-        } for measurement in measurements
-    ]
-
     context = {
         'measurements': measurements,
         'last_temp': last_temp,
         'last_ph': last_ph,
         'last_tds': last_tds,
         'last_ec': last_ec,
-        'data': json.dumps(data),
         'suggestions': suggestions,
     }
     return render(request, 'dashboard.html', context)
@@ -139,18 +128,40 @@ def ph(request):
     }
     return render(request, 'ph.html', context)
 
+
+def ph_data(request):
+    measurements = Measure.objects.order_by("-timestamp")[:30]
+    data = [
+        {
+            "timestamp": measurement.timestamp.strftime("%Y-%m-%d %H:%M"),
+            "ph": measurement.ph,
+        }
+        for measurement in measurements
+    ]
+    return JsonResponse({"data": data})
+
+@csrf_exempt
+@require_POST
+def set_auto_mode(request):
+    data = json.loads(request.body)
+    mode = data.get("mode")
+    if mode not in ["auto", "manual"]:
+        return JsonResponse({"error": "Modo inválido"}, status=400)
+
+    topic = "sistema/auto_mode"
+    payload = "ON" if mode == "auto" else "OFF"
+    publish.single(topic, payload, hostname="test.mosquitto.org", port=1883)
+
+    return JsonResponse({"success": True})
+
 @csrf_exempt
 @require_POST
 def set_motor_state(request):
-    import json
-
     data = json.loads(request.body)
     motor = data.get("motor")
     state = data.get("state")  # True o False
 
     # Define el topic y payload según el motor
-    if motor == "auto_mode":
-        topic = "sistema/motor_automatizacion"
     if motor == "ph_alcalino":
         topic = "sistema/motor_ph_alcalino"
     elif motor == "ph_acido":
@@ -160,7 +171,7 @@ def set_motor_state(request):
     else:
         return JsonResponse({"error": "Motor inválido"}, status=400)
 
-    payload = "on" if state else "off"
+    payload = "ON" if state else "OFF"
 
     publish.single(topic, payload, hostname="test.mosquitto.org", port=1883)
     return JsonResponse({"success": True})
