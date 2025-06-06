@@ -1,4 +1,4 @@
-let currentUnit = 'C'; // Default unit is Celsius
+let currentUnit = localStorage.getItem('temperatureUnit') || 'C'; // Default unit is Celsius
 
 function changeTemperatureUnit(direction) {
     const tempElement = document.querySelector('.temperature-text');
@@ -15,5 +15,6 @@ function changeTemperatureUnit(direction) {
         currentUnit = direction === 'up' ? 'C' : 'F';
     }
 
+    localStorage.setItem('temperatureUnit', currentUnit); // Save the selected unit
     tempElement.textContent = `${tempValue.toFixed(2)} °${currentUnit}`;
 }

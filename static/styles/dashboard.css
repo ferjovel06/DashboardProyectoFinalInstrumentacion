@@ -72,3 +72,41 @@ a.active:hover {
     border: 1px solid #6155E8;
     border-radius: 10px;
 }
+
+.tds-segment {
+    flex: 1; /* Cada segmento ocupa el mismo espacio */
+    text-align: center;
+    padding: 10px 0;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #000;
+    border-right: 1px solid #fff; /* Línea divisoria entre segmentos */
+    display: flex;
+    flex-direction: column; /* Alinea el valor y la leyenda en columna */
+    justify-content: center;
+    align-items: center;
+}
+
+.tds-segment:last-child {
+    border-right: none; /* Elimina la línea del último segmento */
+}
+
+.tds-value {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.tds-legend {
+    font-size: 0.8em;
+    color: #555;
+    text-align: center;
+}
+
+.tds-label {
+    text-align: center;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #333;
+}

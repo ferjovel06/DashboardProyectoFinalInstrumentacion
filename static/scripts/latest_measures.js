@@ -1,10 +1,22 @@
+function convertTemperature(value, targetUnit) {
+    if (targetUnit === 'C') return value; // Already in Celsius
+    if (targetUnit === 'F') return value * 9 / 5 + 32; // Convert to Fahrenheit
+    if (targetUnit === 'K') return value + 273.15; // Convert to Kelvin
+    return value;
+}
+
 function fetchLatestMeasurement() {
     fetch('/latest/')
         .then(response => response.json())
         .then(data => {
+            const currentUnit = localStorage.getItem('temperatureUnit') || 'C'; // Get the selected unit
+
             if (data.temperature !== null) {
                 const tempElement = document.getElementById('last_temp');
-                if (tempElement) tempElement.innerText = data.temperature.toFixed(1) + ' °C';
+                if (tempElement) {
+                    const convertedTemp = convertTemperature(data.temperature, currentUnit);
+                    tempElement.innerText = convertedTemp.toFixed(2) + ` °${currentUnit}`;
+                }
             }
             if (data.ph !== null) {
                 const phElement = document.getElementById('last_ph');
@@ -24,8 +36,8 @@ function fetchLatestMeasurement() {
         });
 }
 
-// Llamar cada 5 segundos
-setInterval(fetchLatestMeasurement, 5000);
+// Llamar cada 3 segundos
+setInterval(fetchLatestMeasurement, 3000);
 
 // Llamar una vez al cargar
 fetchLatestMeasurement();

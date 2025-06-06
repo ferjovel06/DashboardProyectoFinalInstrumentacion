@@ -128,13 +128,54 @@ def ph(request):
     }
     return render(request, 'ph.html', context)
 
-
 def ph_data(request):
     measurements = Measure.objects.order_by("-timestamp")[:30]
     data = [
         {
             "timestamp": measurement.timestamp.strftime("%Y-%m-%d %H:%M"),
             "ph": measurement.ph,
+        }
+        for measurement in measurements
+    ]
+    return JsonResponse({"data": data})
+
+def temperature(request):
+    measurements = Measure.objects.order_by('-timestamp')[:30]
+    last_temp = measurements[0].temperature if measurements else None
+
+    context = {
+        'measurements': measurements,
+        'last_temp': last_temp,
+    }
+    return render(request, 'temperature.html', context)
+
+def temperature_data(request):
+    measurements = Measure.objects.order_by("-timestamp")[:30]
+    data = [
+        {
+            "timestamp": measurement.timestamp.strftime("%Y-%m-%d %H:%M"),
+            "temp": measurement.temperature,
+        }
+        for measurement in measurements
+    ]
+    return JsonResponse({"data": data})
+
+def tds(request):
+    measurements = Measure.objects.order_by('-timestamp')[:30]
+    last_tds = measurements[0].tds if measurements else None
+
+    context = {
+        'measurements': measurements,
+        'last_tds': last_tds,
+    }
+    return render(request, 'tds.html', context)
+
+def tds_data(request):
+    measurements = Measure.objects.order_by("-timestamp")[:30]
+    data = [
+        {
+            "timestamp": measurement.timestamp.strftime("%Y-%m-%d %H:%M"),
+            "tds": measurement.tds,
         }
         for measurement in measurements
     ]
@@ -150,7 +191,7 @@ def set_auto_mode(request):
 
     topic = "sistema/auto_mode"
     payload = "ON" if mode == "auto" else "OFF"
-    publish.single(topic, payload, hostname="test.mosquitto.org", port=1883)
+    publish.single(topic, payload, hostname="192.168.177.32", port=1883)
 
     return JsonResponse({"success": True})
 
@@ -173,5 +214,5 @@ def set_motor_state(request):
 
     payload = "ON" if state else "OFF"
 
-    publish.single(topic, payload, hostname="test.mosquitto.org", port=1883)
+    publish.single(topic, payload, hostname="192.168.177.32", port=1883)
     return JsonResponse({"success": True})

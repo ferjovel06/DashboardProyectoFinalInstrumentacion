@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% load static %} {% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row justify-content-center">
+                        <div class="card border-0 flex-fill d-flex" style="max-width: 450px; margin: 0 auto; min-height: 200px;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="dashboard-card-title fw-bold">Temperatura</h5>
+                                <div
+                                        class="flex-fill d-flex align-items-center justify-content-center gap-3"
+                                >
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        {% if last_temp > 25 %}
+                                            <img
+                                                    src="{% static 'assets/hotTemp.svg' %}"
+                                                    alt="Temperature Icon"
+                                                    class="img-fluid"
+                                                    width="80"
+                                            />
+                                        {% else %}
+                                            <img
+                                                    src="{% static 'assets/coldTemp.svg' %}"
+                                                    alt="Temperature Icon"
+                                                    class="img-fluid"
+                                                    width="80"
+                                            />
+                                        {% endif %}
+                                    </div>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <p class="temperature-text fw-bold mb-0" id="last_temp">
+                                            {{ last_temp }} °C
+                                        </p>
+                                    </div>
+                                    <div
+                                            class="d-flex flex-column justify-content-center align-items-center"
+                                    >
+                                        <button
+                                                class="btn btn-sm mb-1"
+                                                onclick="changeTemperatureUnit('up')"
+                                        >
+                                            <img
+                                                    src="{% static 'assets/up-arrow.svg' %}"
+                                                    alt="Up Arrow"
+                                                    width="16"
+                                            />
+                                        </button>
+                                        <button
+                                                class="btn btn-sm"
+                                                onclick="changeTemperatureUnit('down')"
+                                        >
+                                            <img
+                                                    src="{% static 'assets/down-arrow.svg' %}"
+                                                    alt="Down Arrow"
+                                                    width="16"
+                                            />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center my-4">
+                    <div class="col-md-10 d-flex flex-column align-items-center">
+                        <div class="card border-0 shadow-sm" style="width: 100%; max-width: 500px;">
+                            <div class="card-body">
+                                <h5 class="dashboard-card-title text-center fw-bold">Historial de Mediciones</h5>
+                                <div id="grafica-temp" class="w-100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row justify-content-center">
+                    <div class="col">
+                        <!-- Contenido de la segunda fila -->
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <div class="gauge-container d-flex justify-content-center">
+                                    <div id="temp-gauge">
+                                        <svg width="300" height="150"></svg>
+                                    </div>
+                                </div>
+                                <h5 class="dashboard-card-title text-center fw-bold">Medición en Celsius</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <div class="gauge-container d-flex justify-content-center">
+                                    <div id="temp-fahrenheit-gauge">
+                                        <svg width="300" height="150"></svg>
+                                    </div>
+                                </div>
+                                <h5 class="dashboard-card-title text-center fw-bold">Medición en Fahrenheit</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="gauge-container d-flex justify-content-center">
+                                    <div id="temp-kelvin-gauge">
+                                        <svg width="300" height="150"></svg>
+                                    </div>
+                                </div>
+                                <h5 class="dashboard-card-title text-center fw-bold">Medición en Kelvin</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} {% block custom_scripts %}
+    <script id="mediciones-data" type="application/json">
+        {{ data|safe }}
+    </script>
+    <script src="{% static 'scripts/chartTemp.js' %}"></script>
+    <script src="{% static 'scripts/gauges.js' %}"></script>
+    <script>
+        // Valor inicial de temperatura
+        const initialTemp = {{ last_temp|default:0 }};
+        // Valor inicial de temperatura en Fahrenheit
+        const initialTempF = ((initialTemp * 9/5) + 32).toFixed(2);
+        // Valor inicial de temperatura en Kelvin
+        const initialTempK = initialTemp + 273.15;
+
+        // Crea el gauge de temperatura en Celsius
+        window.tempGaugeUpdate = createGauge(
+            "#temp-gauge", // selector del contenedor
+            -55,           // valor mínimo
+            125,           // valor máximo
+            "ph-gradient", // id único para el gradiente
+            initialTemp,   // valor inicial
+            "°C"           // unidad (grados Celsius)
+        );
+
+        // Crea el gauge de temperatura en Fahrenheit
+        window.tempFahrenheitGaugeUpdate = createGauge(
+            "#temp-fahrenheit-gauge", // selector del contenedor
+            -67,                      // valor mínimo
+            257,                      // valor máximo
+            "ph-gradient-f",          // id único para el gradiente
+            initialTempF,             // valor inicial
+            "°F"                      // unidad (grados Fahrenheit)
+        );
+
+        // Crea el gauge de temperatura en Kelvin
+        window.tempKelvinGaugeUpdate = createGauge(
+            "#temp-kelvin-gauge",     // selector del contenedor
+            218,                      // valor mínimo
+            398,                      // valor máximo
+            "ph-gradient-k",          // id único para el gradiente
+            initialTempK,             // valor inicial
+            "K"                       // unidad (Kelvin)
+        );
+    </script>
+{% endblock %}

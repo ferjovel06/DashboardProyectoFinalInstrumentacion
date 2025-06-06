@@ -297,38 +297,8 @@
             </div>
         </div>
     </div>
-    <!-- <div class="container">
-
-    <div class="gauge-container row text-center">
-        <h2>Mediciones Actuales</h2>
-
-        <!-- Gauge de Temperatura -->
-    <!-- <div class="col-md-4">
-            <h3>Temperatura</h3>
-            <div id="temperature-gauge">
-                <svg width="300" height="150"></svg>
-            </div>
-        </div>
-
-        <!-- Gauge de Sólidos Disueltos -->
-    <!-- <div class="col-md-4">
-            <h3>Sólidos Disueltos</h3>
-            <div id="tds-gauge">
-                <svg width="300" height="150"></svg>
-            </div>
-        </div>
-
-        <!-- Gauge de pH -->
-    <!-- <div class="col-md-4">
-            <h3>pH</h3>
-            <div id="ph-gauge">
-                <svg width="300" height="150"></svg>
-            </div>
-        </div>
-    </div>
-</div> -->
 {% endblock %} {% block custom_scripts %}
-    <script src="{% static 'scripts/dateTime.js' %}"></script>
+    <script src="{% static 'scripts/ph_indicator.js' %}"></script>
     <script src="{% static 'scripts/get_observations.js' %}"></script>
     <script src="{% static 'scripts/motors.js' %}"></script>
 {% endblock %}

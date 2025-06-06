@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% load static %} {% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <h5 class="dashboard-card-title fw-bold">Solidos Disueltos</h5>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img
+                                                src="{% static 'assets/tdsImage.svg' %}"
+                                                alt="Sólidos Disueltos Icon"
+                                                class="img-fluid"
+                                                width="100"
+                                        />
+                                    </div>
+                                    <div class="col-md-8 d-flex align-items-center">
+                                        <p class="tds-text fw-bold mb-0" id="last_tds">{{ last_tds }} ppm</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Segunda columna de la segunda fila -->
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <h5 class="dashboard-card-title fw-bold">
+                                    Conductividad Electrica
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img
+                                                src="{% static 'assets/ecImage.svg' %}"
+                                                alt="Sólidos Disueltos Icon"
+                                                class="img-fluid"
+                                                width="100"
+                                        />
+                                    </div>
+                                    <div class="col-md-8 d-flex align-items-center">
+                                        <p class="tds-text fw-bold mb-0" id="last_ec">{{ last_ec }} mS/cm</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-4">
+                    <div class="col">
+                        <h5 class="dashboard-card-title fw-bold text-center">
+                            Solidos Disueltos Totales en Partes por Millon
+                        </h5>
+                        <div class="tds-scale">
+                                <div class="tds-segment" style="background-color: #cceeff;">
+                                    <span class="tds-value">0</span>
+                                    <span class="tds-legend">Agua desionizada o destilada</span>
+                                </div>
+                                <div class="tds-segment" style="background-color: #99ddff;">
+                                    <span class="tds-value">50</span>
+                                    <span class="tds-legend">Agua muy blanda, poco mineralizada</span>
+                                </div>
+                                <div class="tds-segment" style="background-color: #66ccff;">
+                                    <span class="tds-value">100</span>
+                                    <span class="tds-legend">Agua potable, baja en minerales</span>
+                                </div>
+                                <div class="tds-segment" style="background-color: #33bbff;">
+                                    <span class="tds-value">200</span>
+                                    <span class="tds-legend">Agua potable, moderadamente mineralizada</span>
+                                </div>
+                                <div class="tds-segment" style="background-color: #66ff66;">
+                                    <span class="tds-value">300</span>
+                                    <span class="tds-legend">Agua aceptable, apta para consumo</span>
+                                </div>
+                                <div class="tds-segment" style="background-color: #ffcc00;">
+                                    <span class="tds-value">400</span>
+                                    <span class="tds-legend">Agua dura, alta en minerales</span>
+                                </div>
+                                <div class="tds-segment" style="background-color: #ff6666;">
+                                    <span class="tds-value">500</span>
+                                    <span class="tds-legend">Agua dura, no apta para consumo</span>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center my-4">
+                    <div class="col-md-10 d-flex flex-column align-items-center">
+                        <div class="card border-0 shadow-sm" style="width: 100%; max-width: 500px;">
+                            <div class="card-body">
+                                <h5 class="dashboard-card-title text-center fw-bold">Historial de Mediciones</h5>
+                                <div id="grafica-tds" class="w-100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row mb-3">
+                    <div class="col">
+                        <!-- Contenido de la primera fila -->
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <h5 class="dashboard-card-title fw-bold">Interpretación de la Medición Actual</h5>
+                                <div id="interpretation-container">
+                                    {% if last_tds <= 50 %}
+                                    <div class="d-flex align-items-center mb-3">
+                                        <span
+                                            class="rounded-circle me-2"
+                                            style="display:inline-block; width:12px; height:12px; background-color: #cceeff;"
+                                        ></span>
+                                        <span class="fw-bold" style="color: #516F91; flex: 1;">Agua desionizada o destilada</span>
+                                        <span class="ms-4 text-muted" style="font-size: 0.85em; color: #879CB3">0 - 50 ppm</span>
+                                    </div>
+                                    {% elif last_tds <= 100 %}
+                                    <div class="d-flex align-items-center mb-3">
+                                        <span
+                                            class="rounded-circle me-2"
+                                            style="display:inline-block; width:12px; height:12px; background-color: #99ddff;"
+                                        ></span>
+                                        <span class="fw-bold" style="color: #516F91; flex: 1;">Agua muy blanda, poco mineralizada</span>
+                                        <span class="ms-4 text-muted" style="font-size: 0.85em; color: #879CB3">50 - 100 ppm</span>
+                                    </div>
+                                    {% elif last_tds <= 200 %}
+                                    <div class="d-flex align-items-center mb-3">
+                                        <span
+                                            class="rounded-circle me-2"
+                                            style="display:inline-block; width:12px; height:12px; background-color: #66ccff;"
+                                        ></span>
+                                        <span class="fw-bold" style="color: #516F91; flex: 1;">Agua potable, baja en minerales</span>
+                                        <span class="ms-4 text-muted" style="font-size: 0.85em; color: #879CB3">100 - 200 ppm</span>
+                                    </div>
+                                    {% elif last_tds <= 300 %}
+                                    <div class="d-flex align-items-center mb-3">
+                                        <span
+                                            class="rounded-circle me-2"
+                                            style="display:inline-block; width:12px; height:12px; background-color: #33bbff;"
+                                        ></span>
+                                        <span class="fw-bold" style="color: #516F91; flex: 1;">Agua potable, moderadamente mineralizada</span>
+                                        <span class="ms-4 text-muted" style="font-size: 0.85em; color: #879CB3">200 - 300 ppm</span>
+                                    </div>
+                                    {% elif last_tds <= 400 %}
+                                    <div class="d-flex align-items-center mb-3">
+                                        <span
+                                            class="rounded-circle me-2"
+                                            style="display:inline-block; width:12px; height:12px; background-color: #66ff66;"
+                                        ></span>
+                                        <span class="fw-bold" style="color: #516F91; flex: 1;">Agua aceptable, apta para consumo</span>
+                                        <span class="ms-4 text-muted" style="font-size: 0.85em; color: #879CB3">300 - 400 ppm</span>
+                                    </div>
+                                    {% elif last_tds <= 500 %}
+                                    <div class="d-flex align-items-center mb-3">
+                                        <span
+                                            class="rounded-circle me-2"
+                                            style="display:inline-block; width:12px; height:12px; background-color: #ffcc00;"
+                                        ></span>
+                                        <span class="fw-bold" style="color: #516F91; flex: 1;">Agua dura, alta en minerales</span>
+                                        <span class="ms-4 text-muted" style="font-size: 0.85em; color: #879CB3">400 - 500 ppm</span>
+                                    </div>
+                                    {% else %}
+                                    <div class="d-flex align-items-center">
+                                        <span
+                                            class="rounded-circle me-2"
+                                            style="display:inline-block; width:12px; height:12px; background-color: #ff6666;"
+                                        ></span>
+                                        <span class="fw-bold" style="color: #516F91; flex: 1;">Agua dura, no apta para consumo</span>
+                                        <span class="ms-4 text-muted" style="font-size: 0.85em; color: #879CB3">500+ ppm</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col">
+                        <!-- Contenido de la segunda fila -->
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="gauge-container d-flex justify-content-center">
+                                    <div id="tds-gauge">
+                                        <svg width="300" height="150"></svg>
+                                    </div>
+                                </div>
+                                <h5 class="dashboard-card-title text-center fw-bold">Medición actual</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} {% block custom_scripts %}
+    <script id="mediciones-data" type="application/json">
+        {{ data|safe }}
+    </script>
+    <script src="{% static 'scripts/chartTds.js' %}"></script>
+    <script src="{% static 'scripts/gauges.js' %}"></script>
+    <script>
+        // Valor inicial del pH (puedes obtenerlo del contexto de Django)
+        const initialTds = {{ last_tds|default:7 }};
+        // Crea el gauge de pH
+        window.tdsGaugeUpdate = createGauge(
+            "#tds-gauge", // selector del contenedor
+            0,           // valor mínimo
+            2000,          // valor máximo
+            "ph-gradient", // id único para el gradiente
+            initialTds,   // valor inicial
+            ""           // unidad (puedes poner "pH" si quieres)
+        );
+    </script>
+{% endblock %}

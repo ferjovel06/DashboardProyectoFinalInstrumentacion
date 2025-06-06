@@ -57,7 +57,7 @@ function createGauge(svgSelector, min, max, gradientId, initialValue, unit) {
         .attr("x", width / 2)
         .attr("y", height / 2 + 10)
         .attr("text-anchor", "middle")
-        .attr("font-size", "32px")
+        .attr("font-size", "24px")
         .attr("fill", "#161A41")
         .text(`${initialValue}${unit}`);
 
