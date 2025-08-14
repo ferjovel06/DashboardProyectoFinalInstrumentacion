@@ -26,5 +26,14 @@
       <jdbc-url>jdbc:sqlite:C:\Users\malcu\Desktop\PROYECTOS\Python\WaterMonitoringDashboard\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="Banda Transportadora" uuid="ff34f48c-9c1d-4035-a28a-1900f2f715e5">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/WaterMonitoringDashboard/settings.py</remarks>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/db.sqlite3</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

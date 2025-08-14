@@ -47,7 +47,7 @@ a.active:hover {
     color: #274C77;
 }
 
-.ph-text, .temperature-text, .tds-text {
+.vel-motor-text, .caudal-text, .tds-text {
     font-size: 2rem;
     color: #516F91;
 }

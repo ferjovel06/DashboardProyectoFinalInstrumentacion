@@ -10,20 +10,20 @@
         </li>
         <li>
             <a href="{% url 'ph' %}" class="nav-link d-flex align-items-center justify-content-start {% if request.path == '/ph/' %}active{% endif %}">
-                {% if request.path == '/ph/' %}<img src="{% static 'assets/phLight.svg' %}" alt="pH" class="img-fluid me-2 active-icon" style="width: 24px;">{% else %}<img src="{% static 'assets/ph.svg' %}" alt="pH" class="img-fluid me-2 default-icon" style="width: 24px;">{% endif %}
-                pH
+                {% if request.path == '/ph/' %}<img src="{% static 'assets/motorLight.svg' %}" alt="motor" class="img-fluid me-2 active-icon" style="width: 24px;">{% else %}<img src="{% static 'assets/ph.svg' %}" alt="pH" class="img-fluid me-2 default-icon" style="width: 24px;">{% endif %}
+                Control de Velocidad
             </a>
         </li>
         <li>
             <a href="{% url 'temperatura' %}" class="nav-link d-flex align-items-center justify-content-start {% if request.path == '/temperatura/' %}active{% endif %}">
                 {% if request.path == '/temperatura/' %}<img src="{% static 'assets/tempLight.svg' %}" alt="temperatura" class="img-fluid me-2 active-icon" style="width: 24px;">{% else %}<img src="{% static 'assets/temperature.svg' %}" alt="pH" class="img-fluid me-2 default-icon" style="width: 24px;">{% endif %}
-                Temperatura
+                Contador de Botellas
             </a>
         </li>
         <li>
             <a href="{% url 'tds' %}" class="nav-link d-flex align-items-center justify-content-start {% if request.path == '/tds/' %}active{% endif %}">
                 {% if request.path == '/tds/' %}<img src="{% static 'assets/tdsLight.svg' %}" alt="tds" class="img-fluid me-2 active-icon" style="width: 24px;">{% else %}<img src="{% static 'assets/solidosDisueltos.svg' %}" alt="pH" class="img-fluid me-2 default-icon" style="width: 24px;">{% endif %}
-                Solidos Disueltos
+                Cantidad de Liquido
             </a>
         </li>
     </ul>

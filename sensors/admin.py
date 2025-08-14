@@ -4,11 +4,10 @@ from .models import Measure, Suggestion
 
 @admin.register(Measure)
 class MeasuresAdmin(admin.ModelAdmin):
-    list_display = ('temperature', 'ph', 'tds', 'ec', 'timestamp')
-    list_filter = ('temperature', 'ph', 'tds', 'ec')
-    search_fields = ('temperature', 'ph', 'tds', 'ec')
+    list_display = ('velocidad_motor', 'caudal', 'timestamp')
+    list_filter = ('velocidad_motor', 'caudal')
+    search_fields = ('velocidad_motor', 'caudal')
     ordering = ('-timestamp',)
-    date_hierarchy = 'timestamp'
     list_per_page = 20
     actions = ['export_as_csv']
     def export_as_csv(self, request, queryset):
@@ -19,10 +18,10 @@ class MeasuresAdmin(admin.ModelAdmin):
         response['Content-Disposition'] = 'attachment; filename="measurements.csv"'
 
         writer = csv.writer(response)
-        writer.writerow(['Temperature', 'pH', 'TDS', 'Timestamp'])
+        writer.writerow(['velocidad_motor', 'caudal', 'Timestamp'])
 
         for measurement in queryset:
-            writer.writerow([measurement.temperature, measurement.ph, measurement.tds, measurement.timestamp])
+            writer.writerow([measurement.velocidad_motor, measurement.caudal])
 
         return response
     export_as_csv.short_description = "Export selected measurements as CSV"

@@ -5,16 +5,12 @@ class Measure(models.Model):
     Model to store sensors data.
     """
     timestamp = models.DateTimeField(auto_now_add=True)
-    temperature = models.FloatField()
-    ph = models.FloatField()
-    tds = models.FloatField()
-    ec = models.FloatField(null=True, blank=True)  # Optional field for electrical conductivity
-    motor_ph_alcalino = models.BooleanField(default=False)
-    motor_ph_acido = models.BooleanField(default=False)
-    motor_tds_altos = models.BooleanField(default=False)
+    velocidad_motor = models.IntegerField()
+    caudal = models.FloatField(null=True, blank=True)
+    cant_botellas = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"Measures at {self.timestamp}: Temperature={self.temperature}, pH={self.ph}, TDS={self.tds}"
+        return f"Measures at {self.timestamp}: Velocidad Motor = {self.velocidad_motor}"
 
     class Meta:
         ordering = ['-timestamp']
