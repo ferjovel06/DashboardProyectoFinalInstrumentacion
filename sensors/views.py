@@ -15,8 +15,9 @@ def request_data(request):
     if request.method == "POST":
         velocidad_motor = float(request.POST.get("velocidad_motor", 0))
         caudal = float(request.POST.get("caudal", 0))
+        botellas = int(request.POST.get("cant_botellas", 0))
 
-        Measure.objects.create(velocidad_motor=velocidad_motor,)
+        Measure.objects.create(velocidad_motor=velocidad_motor, caudal=caudal, botellas=botellas)
         return HttpResponse("Datos recibidos", status=201)
     return HttpResponse("Método no permitido", status=405)
 
@@ -25,12 +26,15 @@ def dashboard(request):
     measurements = Measure.objects.order_by('-timestamp')[:30]
     last_velocidad_motor = measurements[0].velocidad_motor if measurements else None
     last_caudal = measurements[0].caudal if measurements else None
+    last_botellas = measurements[0].cant_botellas if measurements else None
+
     suggestions = Suggestion.objects.order_by('-timestamp')[:5]
 
     context = {
         'measurements': measurements,
         'last_velocidad_motor': last_velocidad_motor,
         'last_caudal': last_caudal,
+        'last_botellas': last_botellas,
         'suggestions': suggestions,
     }
     return render(request, 'dashboard.html', context)
@@ -40,11 +44,15 @@ def latest_measurement(request):
     if last:
         data = {
             'last_velocidad_motor': last.velocidad_motor,
+            'last_caudal': last.caudal,
+            'last_botellas': last.cant_botellas,
             'timestamp': last.timestamp.isoformat(),
         }
     else:
         data = {
             'velocidad_motor': None,
+            'caudal': None,
+            'cant_botellas': None,
             'timestamp': None,
         }
     return JsonResponse(data)

@@ -4,9 +4,9 @@ from .models import Measure, Suggestion
 
 @admin.register(Measure)
 class MeasuresAdmin(admin.ModelAdmin):
-    list_display = ('velocidad_motor', 'caudal', 'timestamp')
-    list_filter = ('velocidad_motor', 'caudal')
-    search_fields = ('velocidad_motor', 'caudal')
+    list_display = ('velocidad_motor', 'caudal', 'cant_botellas', 'timestamp')
+    list_filter = ('velocidad_motor', 'caudal', 'cant_botellas', 'timestamp')
+    search_fields = ('velocidad_motor', 'caudal', 'cant_botellas')
     ordering = ('-timestamp',)
     list_per_page = 20
     actions = ['export_as_csv']

@@ -129,8 +129,18 @@
                                                 width="50"
                                         />
                                     </div>
-                                    <div class="col-md-8 d-flex align-items-center">
-                                        <p class="tds-text fw-bold mb-0" id="last_tds">{{ last_tds }} ppm</p>
+                                    <div class="col-md-8 d-flex flex-column align-items-center justify-content-center">
+                                        <p class="tds-text fw-bold mb-0 text-center" id="last_tds">{{ last_botellas }} und</p>
+
+                                        <a class="text-decoration-none d-flex justify-content-center align-items-center mt-2">
+                                            <span class="text-muted fw-bold me-2">Reiniciar conteo</span>
+                                            <img
+                                                src="{% static 'assets/button-hand.svg' %}"
+                                                alt="Reset Icon"
+                                                class="img-fluid"
+                                                width="20"
+                                            />
+                                        </a>
                                     </div>
                                 </div>
                             </div>
