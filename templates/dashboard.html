@@ -187,42 +187,62 @@
                                     </div>
                                 </div>                                 
                             </div>
-                            <!-- Columna unica de la tercera fila -->
+                        </div>
+                        <!-- Columna unica de la tercera fila -->
                             <div class="row mb-3">
-                            <div class="col-md-12 d-flex justify-content-center">
-                                <div class="card border-0 flex-fill d-flex h-100" style="max-width: 400px;">
-                                    <div class="card-body h-100 d-flex flex-column">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <h5 class="dashboard-card-title fw-bold">
-                                                Estado General
-                                            </h5>
-                                            <img
-                                                src="{% static 'assets/more-arrow.svg' %}"
-                                                alt="More Arrow"
-                                                class="img-fluid"
-                                                width="20"
-                                            />
-                                        </div>
-                                        <div class="row flex-grow-1 align-items-center">
-                                            <div class="col-4 d-flex justify-content-center align-items-center">
+                                <div class="col-md-12 d-flex justify-content-center">
+                                    <div class="card border-0 flex-fill d-flex h-100" style="max-width: 400px;">
+                                        <div class="card-body h-100 d-flex flex-column">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <h5 class="dashboard-card-title fw-bold">
+                                                    Porcentaje de llenado
+                                                </h5>
                                                 <img
-                                                    src="{% static 'assets/estado-general.svg' %}"
-                                                    alt="Estado General Icon"
+                                                    src="{% static 'assets/more-arrow.svg' %}"
+                                                    alt="More Arrow"
                                                     class="img-fluid"
-                                                    width="70"
+                                                    width="20"
                                                 />
                                             </div>
-                                            <div class="col-8 d-flex flex-column align-items-center justify-content-center">
-                                                <p class="fw-bold mb-0 text-center" id="estado_general">
-                                                    {{ estado_general }}
-                                                </p>
+                                            <div class="row flex-grow-1 align-items-center">
+                                                <div class="col-md-4 d-flex justify-content-center align-items-center">
+                                                    <img
+                                                        src="{% static 'assets/llenado.svg' %}"
+                                                        alt="Porcentaje de llenado Icon"
+                                                        class="img-fluid"
+                                                        width="100"
+                                                    />
+                                                </div>
+                                                <div class="col-md-6 d-flex justify-content-center align-items-center">
+                                                    <p class="vel-motor-text fw-bold" id="last_cant_liquido">{{ last_cant_liquido }} %</p>
+                                                </div>
+                                                <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
+                                                    <button
+                                                        class="btn btn-sm mb-1"
+                                                        onclick="changeTemperatureUnit('up')"
+                                                    >
+                                                        <img
+                                                            src="{% static 'assets/up-arrow.svg' %}"
+                                                            alt="Up Arrow"
+                                                            width="16"
+                                                        />
+                                                    </button>
+                                                    <button
+                                                        class="btn btn-sm"
+                                                        onclick="changeTemperatureUnit('down')"
+                                                    >
+                                                        <img
+                                                            src="{% static 'assets/down-arrow.svg' %}"
+                                                            alt="Down Arrow"
+                                                            width="16"
+                                                        />
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
-                        </div>
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <!-- Columna única de la tercera fila -->
@@ -295,7 +315,7 @@
                 <!-- Contenido de la columna secundaria -->
                 <div class="card border-0">
                     <div class="card-body">
-                        <h5 class="dashboard-card-title fw-bold">Observaciones del monitoreo</h5>
+                        <h5 class="dashboard-card-title fw-bold">Recomendaciones</h5>
                         <div id="observations-container">
                             {% for observation in observations %}
                                 <div class="mb-2">
@@ -319,19 +339,13 @@
                 <div class="card border-0 mt-3">
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <h5 class="dashboard-card-title fw-bold mb-0">Panel de acceso rápido</h5>
-                            <div class="form-check form-switch ms-2" style="transform: scale(1.2);">
-                                <input class="form-check-input" type="checkbox" id="auto-mode-toggle"
-                                       style="width: 2em;">
-                                <label id="auto-mode-label" class="form-check-label fw-bold dashboard-card-title"
-                                       for="auto-mode-toggle" style="font-size: 1rem;">Auto</label>
-                            </div>
+                            <h5 class="dashboard-card-title fw-bold mb-0">Habilitar modificacion</h5>
                         </div>
                         <div class="list-group">
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <div class="d-flex align-items-center">
-                                    <img src="{% static 'assets/motores.svg' %}" alt="Motor 1" width="32" class="me-2"/>
-                                    <span class="fw-bold dashboard-card-title">Motor de pH alcalino</span>
+                                    <img src="{% static 'assets/control-motor.svg' %}" alt="Motor" width="32" class="me-2"/>
+                                    <span class="fw-bold dashboard-card-title">Velocidad</span>
                                 </div>
                                 <div class="form-check form-switch" style="transform: scale(1.5);">
                                     <input class="form-check-input" type="checkbox" id="motor-ph-alcalino-toggle"
@@ -341,8 +355,8 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <div class="d-flex align-items-center">
-                                    <img src="{% static 'assets/motores.svg' %}" alt="Motor 2" width="32" class="me-2"/>
-                                    <span class="fw-bold dashboard-card-title">Motor de pH acido</span>
+                                    <img src="{% static 'assets/control-botellas.svg' %}" alt="Botella" height="32" class="me-2"/>
+                                    <span class="fw-bold dashboard-card-title">Contador de botellas</span>
                                 </div>
                                 <div class="form-check form-switch" style="transform: scale(1.5);">
                                     <input class="form-check-input" id="motor-ph-acido-toggle" type="checkbox"
