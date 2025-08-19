@@ -8,8 +8,8 @@
                 <div class="row mb-3 align-items-stretch">
                     <div class="col-md-6 col-sm-12 d-flex flex-wrap">
                         <!-- Primera columna de la primera fila -->
-                        <div class="card border-0 flex-fill d-flex">
-                            <div class="card-body">
+                        <div class="card border-0 flex-fill d-flex h-100">
+                            <div class="card-body h-100 d-flex flex-column">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <h5 class="dashboard-card-title fw-bold">
                                         Velocidad del Motor
@@ -21,155 +21,208 @@
                                         width="20"
                                     />
                                 </div>
-                                <div
-                                    class="row text-center align-items-center justify-content-center"
-                                >
-                                    <div
-                                        class="col-md-4 d-flex justify-content-center align-items-center"
-                                    >
+                                <div class="row flex-grow-1 align-items-center">
+                                    <div class="col-md-4 d-flex justify-content-center align-items-center">
                                         <img
                                             src="{% static 'assets/motor.svg' %}"
-                                            alt="pH Icon"
+                                            alt="motor Icon"
                                             class="img-fluid"
                                             width="100"
                                         />
                                     </div>
-                                    <div
-                                        class="col-md-6 d-flex justify-content-center align-items-center"
-                                    >
+                                    <div class="col-md-6 d-flex justify-content-center align-items-center">
                                         <p class="vel-motor-text fw-bold" id="last_velocidad_motor">{{ last_velocidad_motor }} rpm</p>
                                     </div>
-                                    <div
-                                            class="col-md-2 d-flex flex-column justify-content-center align-items-center"
-                                    >
+                                    <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
                                         <button
-                                                class="btn btn-sm mb-1"
-                                                onclick="changeTemperatureUnit('up')"
+                                            class="btn btn-sm mb-1"
+                                            onclick="changeTemperatureUnit('up')"
                                         >
                                             <img
-                                                    src="{% static 'assets/up-arrow.svg' %}"
-                                                    alt="Up Arrow"
-                                                    width="16"
+                                                src="{% static 'assets/up-arrow.svg' %}"
+                                                alt="Up Arrow"
+                                                width="16"
                                             />
                                         </button>
                                         <button
-                                                class="btn btn-sm"
-                                                onclick="changeTemperatureUnit('down')"
+                                            class="btn btn-sm"
+                                            onclick="changeTemperatureUnit('down')"
                                         >
                                             <img
-                                                    src="{% static 'assets/down-arrow.svg' %}"
-                                                    alt="Down Arrow"
-                                                    width="16"
+                                                src="{% static 'assets/down-arrow.svg' %}"
+                                                alt="Down Arrow"
+                                                width="16"
                                             />
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 d-flex">
-                        <!-- Segunda columna de la primera fila -->
-                        <div class="card border-0 flex-fill d-flex">
-                            <div class="card-body d-flex flex-column">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <h5 class="dashboard-card-title fw-bold">
-                                        Caudal
-                                    </h5>
-                                    <img
-                                        src="{% static 'assets/more-arrow.svg' %}"
-                                        alt="More Arrow"
-                                        class="img-fluid"
-                                        width="20"
-                                    />
-                                </div>
-                                <div
-                                        class="flex-fill d-flex align-items-center justify-content-center gap-3"
-                                >
-                                    <div class="d-flex justify-content-center align-items-center">
+                        </div>
+                        <div class="col-md-6 d-flex">
+                            <!-- Segunda columna de la primera fila -->
+                            <div class="card border-0 flex-fill d-flex h-100">
+                                <div class="card-body h-100 d-flex flex-column">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h5 class="dashboard-card-title fw-bold">
+                                            Caudal
+                                        </h5>
                                         <img
-                                            src="{% static 'assets/caudal.svg' %}"
-                                            alt="Caudal Icon"
+                                            src="{% static 'assets/more-arrow.svg' %}"
+                                            alt="More Arrow"
                                             class="img-fluid"
-                                            width="70"
+                                            width="20"
                                         />
                                     </div>
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <p class="caudal-text fw-bold mb-0" id="last_caudal">
-                                            {{ last_caudal }} L/s
-                                        </p>
+                                    <div class="row flex-grow-1 align-items-center">
+                                        <div class="col-md-4 d-flex justify-content-center align-items-center">
+                                            <img
+                                                src="{% static 'assets/caudal.svg' %}"
+                                                alt="Caudal Icon"
+                                                class="img-fluid"
+                                                width="70"
+                                            />
+                                        </div>
+                                        <div class="col-md-8 d-flex flex-column align-items-center justify-content-center">
+                                            <p class="caudal-text fw-bold mb-0" id="last_caudal">
+                                                {{ last_caudal }} L/s
+                                            </p>
+                                        </div>
                                     </div>
-                                    
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <!-- Primera columna de la segunda fila -->
-                        <div class="card border-0">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <h5 class="dashboard-card-title fw-bold">
-                                        Contador de Botellas
-                                    </h5>
-                                    <img
-                                        src="{% static 'assets/more-arrow.svg' %}"
-                                        alt="More Arrow"
-                                        class="img-fluid"
-                                        width="20"
-                                    />
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <img
-                                                src="{% static 'assets/botella.svg' %}"
-                                                alt="Botella Icon"
-                                                class="img-fluid"
-                                                width="50"
-                                        />
-                                    </div>
-                                    <div class="col-md-8 d-flex flex-column align-items-center justify-content-center">
-                                        <p class="tds-text fw-bold mb-0 text-center" id="last_tds">{{ last_botellas }} und</p>
-
-                                        <a class="text-decoration-none d-flex justify-content-center align-items-center mt-2">
-                                            <span class="text-muted fw-bold me-2">Reiniciar conteo</span>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6 d-flex">
+                                <!-- Primera columna de la segunda fila -->
+                                <div class="card border-0 flex-fill d-flex h-100">
+                                    <div class="card-body h-100 d-flex flex-column">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <h5 class="dashboard-card-title fw-bold">
+                                                Contador de Botellas
+                                            </h5>
                                             <img
-                                                src="{% static 'assets/button-hand.svg' %}"
-                                                alt="Reset Icon"
+                                                src="{% static 'assets/more-arrow.svg' %}"
+                                                alt="More Arrow"
                                                 class="img-fluid"
                                                 width="20"
                                             />
-                                        </a>
+                                        </div>
+                                        <div class="row flex-grow-1 align-items-center">
+                                            <div class="col-md-4 d-flex justify-content-center align-items-center">
+                                                <img
+                                                    src="{% static 'assets/botella.svg' %}"
+                                                    alt="Botella Icon"
+                                                    class="img-fluid"
+                                                    width="50"
+                                                />
+                                            </div>
+                                            <div class="col-md-8 d-flex flex-column align-items-center justify-content-center">
+                                                <p class="tds-text fw-bold mb-0 text-center" id="last_tds">{{ last_botellas }} und</p>
+                                                <a class="text-decoration-none d-flex justify-content-center align-items-center mt-2">
+                                                    <span class="text-muted fw-bold me-2">Reiniciar conteo</span>
+                                                    <img
+                                                        src="{% static 'assets/button-hand.svg' %}"
+                                                        alt="Reset Icon"
+                                                        class="img-fluid"
+                                                        width="20"
+                                                    />
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <!-- Segunda columna de la segunda fila -->
-                        <div class="card border-0">
-                            <div class="card-body">
-                                <h5 class="dashboard-card-title fw-bold">
-                                    Conductividad Electrica
-                                </h5>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <img
-                                                src="{% static 'assets/ecImage.svg' %}"
-                                                alt="Sólidos Disueltos Icon"
+                            <div class="col-md-6 d-flex">
+                                <!-- Segunda columna de la segunda fila -->
+                                <div class="card border-0 flex-fill d-flex h-100">
+                                    <div class="card-body h-100 d-flex flex-column">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <h5 class="dashboard-card-title fw-bold">
+                                                Cantidad de liquido a dosificar
+                                            </h5>
+                                            <img
+                                                src="{% static 'assets/more-arrow.svg' %}"
+                                                alt="More Arrow"
                                                 class="img-fluid"
-                                                width="100"
-                                        />
+                                                width="20"
+                                            />
+                                        </div>
+                                        <div class="row flex-grow-1 align-items-center">
+                                            <div class="col-md-4 d-flex justify-content-center align-items-center">
+                                                <img
+                                                    src="{% static 'assets/cant-liquido.svg' %}"
+                                                    alt="Cantidad de líquido Icon"
+                                                    class="img-fluid"
+                                                    width="100"
+                                                />
+                                            </div>
+                                            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                                                <p class="vel-motor-text fw-bold" id="last_cant_liquido">{{ last_cant_liquido }} ml</p>
+                                            </div>
+                                            <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
+                                                <button
+                                                    class="btn btn-sm mb-1"
+                                                    onclick="changeTemperatureUnit('up')"
+                                                >
+                                                    <img
+                                                        src="{% static 'assets/up-arrow.svg' %}"
+                                                        alt="Up Arrow"
+                                                        width="16"
+                                                    />
+                                                </button>
+                                                <button
+                                                    class="btn btn-sm"
+                                                    onclick="changeTemperatureUnit('down')"
+                                                >
+                                                    <img
+                                                        src="{% static 'assets/down-arrow.svg' %}"
+                                                        alt="Down Arrow"
+                                                        width="16"
+                                                    />
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-8 d-flex align-items-center">
-                                        <p class="tds-text fw-bold mb-0" id="last_ec">{{ last_ec }} mS/cm</p>
+                                </div>                                 
+                            </div>
+                            <!-- Columna unica de la tercera fila -->
+                            <div class="row mb-3">
+                            <div class="col-md-12 d-flex justify-content-center">
+                                <div class="card border-0 flex-fill d-flex h-100" style="max-width: 400px;">
+                                    <div class="card-body h-100 d-flex flex-column">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <h5 class="dashboard-card-title fw-bold">
+                                                Estado General
+                                            </h5>
+                                            <img
+                                                src="{% static 'assets/more-arrow.svg' %}"
+                                                alt="More Arrow"
+                                                class="img-fluid"
+                                                width="20"
+                                            />
+                                        </div>
+                                        <div class="row flex-grow-1 align-items-center">
+                                            <div class="col-4 d-flex justify-content-center align-items-center">
+                                                <img
+                                                    src="{% static 'assets/estado-general.svg' %}"
+                                                    alt="Estado General Icon"
+                                                    class="img-fluid"
+                                                    width="70"
+                                                />
+                                            </div>
+                                            <div class="col-8 d-flex flex-column align-items-center justify-content-center">
+                                                <p class="fw-bold mb-0 text-center" id="estado_general">
+                                                    {{ estado_general }}
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
-                    </div>
-                </div>
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <!-- Columna única de la tercera fila -->

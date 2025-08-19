@@ -12,12 +12,15 @@ from django.utils import timezone
 
 @csrf_exempt
 def request_data(request):
+    print("Solicitud de datos recibida")
+    print(request.body)
     if request.method == "POST":
-        velocidad_motor = float(request.POST.get("velocidad_motor", 0))
+        print("Datos recibidos:")
+        print(request.POST)
         caudal = float(request.POST.get("caudal", 0))
-        botellas = int(request.POST.get("cant_botellas", 0))
+        velocidad_motor = float(request.POST.get("velocidad_motor", 0))
 
-        Measure.objects.create(velocidad_motor=velocidad_motor, caudal=caudal, botellas=botellas)
+        Measure.objects.create(caudal=caudal, velocidad_motor=velocidad_motor)
         return HttpResponse("Datos recibidos", status=201)
     return HttpResponse("Método no permitido", status=405)
 
@@ -27,6 +30,7 @@ def dashboard(request):
     last_velocidad_motor = measurements[0].velocidad_motor if measurements else None
     last_caudal = measurements[0].caudal if measurements else None
     last_botellas = measurements[0].cant_botellas if measurements else None
+    last_cant_liquido = measurements[0].cant_liquido if measurements else None
 
     suggestions = Suggestion.objects.order_by('-timestamp')[:5]
 
@@ -35,6 +39,7 @@ def dashboard(request):
         'last_velocidad_motor': last_velocidad_motor,
         'last_caudal': last_caudal,
         'last_botellas': last_botellas,
+        'last_cant_liquido': last_cant_liquido,
         'suggestions': suggestions,
     }
     return render(request, 'dashboard.html', context)
@@ -46,6 +51,7 @@ def latest_measurement(request):
             'last_velocidad_motor': last.velocidad_motor,
             'last_caudal': last.caudal,
             'last_botellas': last.cant_botellas,
+            'last_cant_liquido': last.cant_liquido,
             'timestamp': last.timestamp.isoformat(),
         }
     else:
@@ -53,6 +59,7 @@ def latest_measurement(request):
             'velocidad_motor': None,
             'caudal': None,
             'cant_botellas': None,
+            'cant_liquido': None,
             'timestamp': None,
         }
     return JsonResponse(data)
@@ -78,18 +85,6 @@ def get_observations(request):
                 observations.append({"text": "Nivel de pH alto", "timestamp": time_str})
 
     return JsonResponse({'observations': observations})
-
-def get_motores(request):
-    motor_ph_alcalino = Measure.objects.latest('id').motor_ph_alcalino
-    motor_ph_acido = Measure.objects.latest('id').motor_ph_acido
-    motor_tds_altos = Measure.objects.latest('id').motor_tds_altos
-
-    # Devolver los datos en formato JSON
-    return JsonResponse({
-        'motor_ph_alcalino': motor_ph_alcalino,
-        'motor_ph_acido': motor_ph_acido,
-        'motor_tds_altos': motor_tds_altos,
-    })
 
 def ph(request):
     measurements = Measure.objects.order_by('-timestamp')[:30]

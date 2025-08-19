@@ -8,6 +8,7 @@ class Measure(models.Model):
     velocidad_motor = models.IntegerField()
     caudal = models.FloatField(null=True, blank=True)
     cant_botellas = models.IntegerField(default=0)
+    cant_liquido = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return f"Measures at {self.timestamp}: Velocidad Motor = {self.velocidad_motor}"
